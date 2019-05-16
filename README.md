@@ -29,6 +29,11 @@ After building the docker image you can start a Ipython notebook, just run:
 ```
 docker run -p 8888:8888 fenicsx:latest
 ``` 
+To share share a host directory with the container run:
+
+```
+docker run -p 8888:8888 -v path/to/host/dir:/root/local fenicsx:latest
+```
 
 ## Authors
 
