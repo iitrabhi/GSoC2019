@@ -1,0 +1,12 @@
+<Xdmf Version="3.0">
+  <Domain>
+    <Grid Name="Grid">
+      <Geometry GeometryType="XYZ">
+        <DataItem DataType="Float" Dimensions="107 3" Format="HDF" Precision="8">tag_triangle.h5:/data0</DataItem>
+      </Geometry>
+      <Topology NumberOfElements="180" TopologyType="Triangle">
+        <DataItem DataType="Int" Dimensions="180 3" Format="HDF" Precision="8">tag_triangle.h5:/data1</DataItem>
+      </Topology>
+    </Grid>
+  </Domain>
+</Xdmf>
