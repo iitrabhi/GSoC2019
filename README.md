@@ -1,6 +1,6 @@
 # GSoC2019: GMsh/XDMF/DOLFIN mesh processing pipeline
 
-This repository consist of code snippets and tests for the FEniCS-GSoC-2019 program. Yon can find the details about the project and my work plan [here](https://github.com/iitrabhi/GSoC2019/blob/master/PROPOSAL.md).
+This repository consist of code snippets and tests for the FEniCS-GSoC-2019 program. You can find the details about the project and my work plan [here](https://github.com/iitrabhi/GSoC2019/blob/master/PROPOSAL.md).
 
 ## Getting Started
 
