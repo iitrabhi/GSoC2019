@@ -1,3 +1,9 @@
+demos-python: &demos-python
+  name: Run demos (Python, serial)
+  command: |
+    cd python/demo/poisson
+    python3 ./demo_poisson.py
+
 version: 2
 jobs:
   build:
@@ -5,4 +11,4 @@ jobs:
       - image: quay.io/fenicsproject/dolfinx:dev-env-real # the primary container, where your job's commands are run
     steps:
       - checkout # check out the code in the project directory
-      - run: echo "hello world" # run the `echo` command
+      - run: *demos-python
