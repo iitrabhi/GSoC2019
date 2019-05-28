@@ -5,11 +5,18 @@ demos-python: &demos-python
     python3 ./generate-demo-files.py
     python3 -m pytest -n3 -v -m serial test.py
 
+folder-tree: &folder-tree
+  name: Get folder tree
+  command: |
+    sudo apt-get install tree
+    tree
+
+
 version: 2
 jobs:
-  build:
+  build-real:
     docker: # use the docker executor type; machine and macos executors are also supported
       - image: quay.io/fenicsproject/dolfinx:dev-env-real # the primary container, where your job's commands are run
     steps:
       - checkout # check out the code in the project directory
-      - run: *demos-python
+      - run: *folder-tree
