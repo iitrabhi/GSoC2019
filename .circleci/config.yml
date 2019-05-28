@@ -8,8 +8,7 @@ demos-python: &demos-python
 folder-tree: &folder-tree
   name: Get folder tree
   command: |
-    sudo apt-get install tree
-    tree
+    ls
 
 
 version: 2
