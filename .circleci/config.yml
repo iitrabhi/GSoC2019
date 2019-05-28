@@ -1,9 +1,8 @@
 demos-python: &demos-python
   name: Run demos (Python, serial)
   command: |
-    cd python/demo
-    python3 ./generate-demo-files.py
-    python3 -m pytest -n3 -v -m serial test.py
+    cd Scripts
+    python3 ./understanding_mesh_workflow.py
 
 folder-tree: &folder-tree
   name: Get folder tree
@@ -18,4 +17,4 @@ jobs:
       - image: quay.io/fenicsproject/dolfinx:dev-env-real # the primary container, where your job's commands are run
     steps:
       - checkout # check out the code in the project directory
-      - run: *folder-tree
+      - run: *demos-python
