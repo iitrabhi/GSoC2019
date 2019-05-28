@@ -14,7 +14,7 @@ folder-tree: &folder-tree
 
 version: 2
 jobs:
-  build-real:
+  build:
     docker: # use the docker executor type; machine and macos executors are also supported
       - image: quay.io/fenicsproject/dolfinx:dev-env-real # the primary container, where your job's commands are run
     steps:
