@@ -1,3 +1,0 @@
-/root/Scripts/cpp/mesh-workflow/build/CMakeFiles/rebuild_cache.dir
-/root/Scripts/cpp/mesh-workflow/build/CMakeFiles/demo_mesh_workflow.dir
-/root/Scripts/cpp/mesh-workflow/build/CMakeFiles/edit_cache.dir
