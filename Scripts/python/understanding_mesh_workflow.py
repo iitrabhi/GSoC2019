@@ -28,22 +28,22 @@ print("\n".join(geom._GMSH_CODE))
 
 mesh = generate_mesh(geom)
 points, cells, cell_data = mesh.points, mesh.cells, mesh.cell_data
-meshio.write("output/mesh_2d.xdmf", meshio.Mesh(
+meshio.write("input/mesh_2d.xdmf", meshio.Mesh(
     points=points,
     cells={"triangle": cells["triangle"]}))
 
-meshio.write("output/mvc_1d.xdmf", meshio.Mesh(
+meshio.write("input/mvc_1d.xdmf", meshio.Mesh(
     points=points,
     cells={"line": cells["line"]},
     cell_data={"line": {"name_to_read": cell_data["line"]["gmsh:physical"]}}
 ))
 
-with dolfin.io.XDMFFile(dolfin.MPI.comm_world, "output/mesh_2d.xdmf") as xdmf_infile:
+with dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/mesh_2d.xdmf") as xdmf_infile:
     mesh_2d = xdmf_infile.read_mesh(dolfin.MPI.comm_world, dolfin.cpp.mesh.GhostMode.none)
 
 mvc = dolfin.MeshValueCollection("size_t", mesh_2d, 1)
 
-with dolfin.io.XDMFFile(dolfin.MPI.comm_world, "output/mvc_1d.xdmf") as xdmf_infile:
+with dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/mvc_1d.xdmf") as xdmf_infile:
     mvc = xdmf_infile.read_mvc_size_t(mesh_2d, "name_to_read")
 
 print("Constructing MeshFunction from MeshValueCollection")
