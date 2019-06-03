@@ -1,7 +1,7 @@
 demos-python: &demos-python
   name: Run demos (Python, serial)
   command: |
-    cd Scripts
+    cd Scripts/python
     python3 ./understanding_mesh_workflow.py
 
 folder-tree: &folder-tree
