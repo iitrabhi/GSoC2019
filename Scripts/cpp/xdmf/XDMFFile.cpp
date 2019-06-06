@@ -6,6 +6,10 @@
 #include <assert.h>
 #include <map>
 
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/stl_bind.h>
+
 std::pair<std::string, int> get_cell_type(const pugi::xml_node& topology_node)
 {
     assert(topology_node);
@@ -114,3 +118,11 @@ XDMFFile::~XDMFFile() {
 
 }
 
+
+// define a module to be imported by python
+PYBIND11_MODULE(pybindings, mymodule) {
+// export the XDMFFile class
+pybind11::class_<XDMFFile>(mymodule, "XDMFFile")
+.def(pybind11::init<std::string>())
+.def("read_mesh", &XDMFFile::read_mesh);
+}
