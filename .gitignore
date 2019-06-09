@@ -11,3 +11,4 @@ Submodules/dolfinx/cpp/build/test/
 Submodules/dolfinx/cpp/test/
 Submodules/dolfinx/cpp/demo/poisson/poisson.c
 Submodules/dolfinx/cpp/demo/
+Submodules/dolfinx/python/build/
