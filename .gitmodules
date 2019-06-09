@@ -1,0 +1,4 @@
+[submodule "submodules/dolfinx"]
+	path = submodules/dolfinx
+	url = https://github.com/FEniCS/dolfinx.git
+	branch = master
