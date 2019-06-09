@@ -2,3 +2,12 @@
 .idea
 .cache
 .fltk
+Scripts/cpp/mesh-workflow-new/build/CMakeFiles/
+Submodules/dolfinx/cpp/build/cmake/
+Submodules/dolfinx/cpp/build/CMakeFiles/
+Submodules/dolfinx/cpp/build/demo/
+Submodules/dolfinx/cpp/build/dolfin/
+Submodules/dolfinx/cpp/build/test/
+Submodules/dolfinx/cpp/test/
+Submodules/dolfinx/cpp/demo/poisson/poisson.c
+Submodules/dolfinx/cpp/demo/
