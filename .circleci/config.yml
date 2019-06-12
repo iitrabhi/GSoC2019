@@ -7,8 +7,9 @@ demos-python: &demos-python
 demos-cpp: &demos-cpp
   name: Run demos (CPP, serial)
   command: |
+    cd Scripts/cpp/mesh-workflow
     mkdir build
-    cd Scripts/cpp/mesh-workflow/build
+    cd build
     cmake ..
     make
     ./demo_mesh_workflow 
