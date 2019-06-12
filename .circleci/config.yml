@@ -14,6 +14,23 @@ demos-cpp: &demos-cpp
     make
     ./demo_mesh_workflow 
 
+build-dolfin: &build-dolfin
+  name: Build xdmf-mvc branch of dolfinx (CPP, Python, serial)
+  command: |
+    sh rebuild_dolfin.sh
+
+new-mesh-workflow: &new-mesh-workflow
+  name: Run new-mesh-workflow (CPP, Python, serial)
+  command: |
+    cd Scripts/cpp/mesh-workflow-new
+    mkdir build
+    cd build
+    cmake ..
+    make
+    ./demo_mesh_workflow 
+
+
+
 folder-tree: &folder-tree
   name: Get folder tree
   command: |
@@ -29,3 +46,5 @@ jobs:
       - checkout # check out the code in the project directory
       - run: *demos-python
       - run: *demos-cpp
+      - run: *build-dolfin
+      - run: *new-mesh-workflow
