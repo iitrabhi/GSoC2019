@@ -10,4 +10,6 @@ cd  Submodules/dolfinx/cpp && \
 	cmake  .. && \
 	make install
 
-pip3 install -e Submodules/dolfinx/python
+cd ../../python
+
+pip3 install -e .
