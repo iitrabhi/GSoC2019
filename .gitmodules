@@ -1,4 +1,4 @@
 [submodule "Submodules/dolfinx"]
 	path = Submodules/dolfinx
-	url = https://github.com/FEniCS/dolfinx.git
-	branch = master
+	url = https://github.com/iitrabhi/dolfinx.git
+	branch = iitrabhi/mvc-xdmf
