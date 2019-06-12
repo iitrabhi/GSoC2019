@@ -1,14 +1,96 @@
+Compiled source
+*.o
+*.Plo
+*.Po
+*.lo
+*.la
+*.a
+*.os
+*.pyc
+*.so
+*.pc
+*.pyd
+*.def
+*.dll
+*.exe
+*.dylib
+*.nbi
+*.nbc
+dolfin/libdolfin.so*
+
+# Log files
+*.log
+
+# Install directory
+/cpp/local
+/cpp/local.*
+
+
+# Configuration files
+dolfin.conf
+dolfin-version
+dolfin-config.cmake
+DOLFINConfig.cmake
+DOLFINConfigVersion.cmake
+UseDOLFIN.cmake
+dolfin-config-version.cmake
+
+.cache
 .ipynb_checkpoints
 .idea
-.cache
 .fltk
-Scripts/cpp/mesh-workflow-new/build/CMakeFiles/
-Submodules/dolfinx/cpp/build/cmake/
-Submodules/dolfinx/cpp/build/CMakeFiles/
-Submodules/dolfinx/cpp/build/demo/
-Submodules/dolfinx/cpp/build/dolfin/
-Submodules/dolfinx/cpp/build/test/
-Submodules/dolfinx/cpp/test/
-Submodules/dolfinx/cpp/demo/poisson/poisson.c
-Submodules/dolfinx/cpp/demo/
-Submodules/dolfinx/python/build/
+
+# Temporaries
+*~
+
+# Compressed files
+*.xz
+*.gz
+*.zs-old
+
+# Data files
+*.pvd
+*.pvtu
+*.vtu
+*.h5
+*.xdmf
+*.bin
+
+# CMake files
+CMakeLists.txt
+!/CMakeLists.txt
+!dolfin/CMakeLists.txt
+!dolfin/*/CMakeLists.txt
+!bench/CMakeLists.txt
+!doc/CMakeLists.txt
+!demo/CMakeLists.txt
+!test/unit/CMakeLists.txt
+!test/unit/cpp/CMakeLists.txt
+
+
+CMakeCache.txt
+CMakeFiles
+cmake_install.cmake
+cmake_uninstall.cmake
+Makefile
+install_manifest.txt
+
+# Local build files
+/cpp/build
+/cpp/build.*/
+
+# OS X files
+.DS_Store
+.DS_Store?
+
+# Eclipse files
+.*project
+.settings
+
+cmake.local
+
+build/
+
+.vscode
+*.egg-info
+.pytest_cache
