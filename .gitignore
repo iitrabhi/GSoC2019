@@ -48,25 +48,6 @@ dolfin-config-version.cmake
 *.gz
 *.zs-old
 
-# CMake files
-CMakeLists.txt
-!/CMakeLists.txt
-!dolfin/CMakeLists.txt
-!dolfin/*/CMakeLists.txt
-!bench/CMakeLists.txt
-!doc/CMakeLists.txt
-!demo/CMakeLists.txt
-!test/unit/CMakeLists.txt
-!test/unit/cpp/CMakeLists.txt
-
-
-CMakeCache.txt
-CMakeFiles
-cmake_install.cmake
-cmake_uninstall.cmake
-Makefile
-install_manifest.txt
-
 # Local build files
 /cpp/build
 /cpp/build.*/
