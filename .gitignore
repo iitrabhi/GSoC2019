@@ -48,14 +48,6 @@ dolfin-config-version.cmake
 *.gz
 *.zs-old
 
-# Data files
-*.pvd
-*.pvtu
-*.vtu
-*.h5
-*.xdmf
-*.bin
-
 # CMake files
 CMakeLists.txt
 !/CMakeLists.txt

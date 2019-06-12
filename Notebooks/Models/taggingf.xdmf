@@ -1,0 +1,21 @@
+<Xdmf Version="3.0">
+  <Domain>
+    <Grid Name="Grid">
+      <Geometry GeometryType="XYZ">
+        <DataItem DataType="Float" Dimensions="107 3" Format="HDF" Precision="8">taggingf.h5:/data0</DataItem>
+      </Geometry>
+      <Topology NumberOfElements="212" TopologyType="Mixed">
+        <DataItem DataType="Int" Dimensions="848" Format="HDF" Precision="4">taggingf.h5:/data1</DataItem>
+      </Topology>
+      <Attribute AttributeType="Scalar" Center="Cell" Name="gmsh:physical">
+        <DataItem DataType="Int" Dimensions="212" Format="HDF" Precision="4">taggingf.h5:/data2</DataItem>
+      </Attribute>
+    </Grid>
+    <Information Name="BoundaryTags">
+        <bottom>1</bottom>
+        <top>2</top>
+        <left>3</left>
+        <right>4</right>
+    </Information>
+  </Domain>
+</Xdmf>
