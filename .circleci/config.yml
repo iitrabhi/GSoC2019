@@ -31,11 +31,16 @@ new-mesh-workflow: &new-mesh-workflow
 
 
 
-folder-tree: &folder-tree
+list-files: &list-files
   name: Get folder tree
   command: |
     ls
 
+pull-submodules: &pull-submodules
+  name: "Pull Submodules"
+  command: |
+    git submodule init
+    git submodule update --remote
 
 version: 2
 jobs:
@@ -44,6 +49,8 @@ jobs:
       - image: quay.io/fenicsproject/dolfinx:real # the primary container, where your job's commands are run
     steps:
       - checkout # check out the code in the project directory
+      - run: *list-files
+      - run: *pull-submodules
       - run: *demos-python
       - run: *demos-cpp
       - run: *build-dolfin
