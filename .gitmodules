@@ -2,3 +2,7 @@
 	path = Submodules/dolfinx
 	url = git@github.com:iitrabhi/dolfinx.git
 	branch = iitrabhi/mvc-xdmf
+[submodule "Submodules/meshio"]
+	path = Submodules/meshio
+	url = git@github.com:iitrabhi/meshio.git
+	branch = iitrabhi/mvc-xdmf
