@@ -8,7 +8,7 @@ int main(int argc, char* argv[])
   common::SubSystemsManager::init_logging(argc, argv);
   common::SubSystemsManager::init_petsc(argc, argv);
 
-  dolfin::io::XDMFFile xdmf_file(MPI_COMM_WORLD,"../input/tag_all.xdmf");
+  dolfin::io::XDMFFile xdmf_file(MPI_COMM_WORLD,"../input/unit_square.xdmf");
   auto mesh_2d = std::make_shared<mesh::Mesh>(xdmf_file.read_mesh(MPI_COMM_WORLD,mesh::GhostMode::none));
 
   auto mapOfTag = xdmf_file.read_tags();
