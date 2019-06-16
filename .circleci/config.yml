@@ -22,7 +22,7 @@ build-dolfin: &build-dolfin
 install-meshio: &install-meshio
   name: Install xdmf-mvc branch of meshio
   command: |
-    sh install-meshio.sh
+    sh install_meshio.sh
 
 new-mesh-workflow: &new-mesh-workflow
   name: Run new-mesh-workflow (CPP, Python, serial)
