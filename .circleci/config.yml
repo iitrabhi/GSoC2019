@@ -19,6 +19,11 @@ build-dolfin: &build-dolfin
   command: |
     sh rebuild_dolfin.sh
 
+install-meshio: &install-meshio
+  name: Install xdmf-mvc branch of meshio
+  command: |
+    sh install-meshio.sh
+
 new-mesh-workflow: &new-mesh-workflow
   name: Run new-mesh-workflow (CPP, Python, serial)
   command: |
@@ -54,5 +59,6 @@ jobs:
       - run: *pull-submodules
       - run: *demos-python
       - run: *demos-cpp
+      - run: *install-meshio
       - run: *build-dolfin
       - run: *new-mesh-workflow

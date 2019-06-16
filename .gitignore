@@ -67,3 +67,5 @@ build/
 .vscode
 *.egg-info
 .pytest_cache
+.bash_history
+.local/
