@@ -3,6 +3,6 @@
 cd Submodules/dolfinx/cpp/build && \
 	make install
 
-cd ../../python
+#cd ../../python
 
-python3 setup.py install 
+#python3 setup.py install 

@@ -69,3 +69,4 @@ build/
 .pytest_cache
 .bash_history
 .local/
+.ipython/

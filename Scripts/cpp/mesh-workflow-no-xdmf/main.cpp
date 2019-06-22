@@ -4,36 +4,9 @@
 using namespace dolfin;
 int main(int argc, char* argv[])
 { 
-  //common::SubSystemsManager::init_logging(argc, argv);
-  //common::SubSystemsManager::init_petsc(argc, argv);
- //auto dummy_mesh = DummyMesh();
- //auto vect =dummy_mesh.points;
- //auto rows=vect.size();
- //auto col=vect[0].size();
- //// Displaying the 2D vector 
- //Eigen::ArrayXXd points(rows, col)  ;
- //Eigen::ArrayXXd cells(rows, col)  ;
- //for (int i = 0; i < vect.size(); i++) { 
- //    for (int j = 0; j < vect[i].size(); j++){
- //      std::cout << vect[i][j] << " "; 
- //      points(i,j)=vect[i][j];
- //      cells(i,j)=dummy_mesh.cells[i][j];
- //    } 
- //    std::cout << std::endl; 
- //} 
 
-  
-  //const Eigen::Ref<const EigenRowArrayXXi64> cells = ;
-
-  //std::int32_t num_ghost_cells = 0;
-  //const std::vector<std::int64_t>& global_cell_indices{};
-  //dolfin::mesh::Mesh mesh_2d(MPI_COMM_WORLD,
-  //                            mesh::CellType::Type::triangle,
-  //                            points,
-  //                            cells,
-  //                            global_cell_indices,
-  //                            dolfin::mesh::GhostMode::none,
-  //                            num_ghost_cells);                             
+  auto dummy_mesh = DummyMesh();
+  auto vect =dummy_mesh.points;                          
 
   common::SubSystemsManager::init_logging(argc, argv);
   common::SubSystemsManager::init_petsc(argc, argv);
@@ -44,30 +17,47 @@ int main(int argc, char* argv[])
   
   std::cout<<mesh_2d->topology().str(true);
  
-
-  std::cout<<"Hmin: "<< mesh_2d->hmin() <<std::endl;
-
-  auto mvc = dolfin::mesh::MeshValueCollection<int>(mesh_2d,1);
+  auto mvc = dolfin::mesh::MeshValueCollection<int>(mesh_2d,dummy_mesh.line_no,dummy_mesh.cell_data,1);
   std::cout<<"MVC size: "<< mvc.size() <<std::endl;
+  auto mvcval = mvc.values();
+
+  std::cout<< "MVC Values" <<std::endl;
+  // Create a map iterator and point to beginning of map
+  auto it = mvcval.begin();
+
+  // Iterate over the map using Iterator till end.
+  while (it != mvcval.end()) {
+      // Accessing KEY from element pointed by it.
+      auto mapcell = it->first;
+
+      // Accessing VALUE from element pointed by it.
+      int number = it->second;
+
+      std::cout << "(" << mapcell.first << ", " << mapcell.second<< ")" <<" :: " << number << std::endl;
+
+      // Increment the Iterator to point to next entry
+      it++;
+  }
+
+  std::cout<<std::endl;
 
   //dolfin::io::XDMFFile xdmf_file_mvc(MPI_COMM_WORLD,"output/mvc_1d.xdmf");
   //auto mvc = xdmf_file_mvc.read_mvc_int(mesh_2d,"name_to_read");
-//
-  //std::cout<<"MVC size: "<< mvc.size() <<std::endl;
-  //auto mf = dolfin::mesh::MeshFunction<int>(mesh_2d,mvc,1);
-  //auto val = mf.values();
-//
-  //std::cout<<"Dimension: "<< mf.dim() <<std::endl;
-  //std::cout<<"Size: "<< mf.size() <<std::endl;
-//
-  //std::cout<< "Values" <<std::endl;
-  //for(int i=0;i<mf.size();i++){
-  //    if(i%20==0){
-  //        std::cout<<std::endl;
-  //    }else{
-  //        std::cout<< val[i] <<"    ";
-  //    }
-  //}
+
+  auto mf = dolfin::mesh::MeshFunction<int>(mesh_2d,mvc,1);
+  auto val = mf.values();
+
+  std::cout<<"MF Dimension: "<< mf.dim() <<std::endl;
+  std::cout<<"MF Size: "<< mf.size() <<std::endl;
+  
+  std::cout<< "MF Values" <<std::endl;
+  for(int i=0;i<mf.size();i++){
+      if(i%20==0){
+          std::cout<<std::endl;
+      }else{
+          std::cout<< val[i] <<"    ";
+      }
+  }
   std::cout<<std::endl;
   return 0;
 }
