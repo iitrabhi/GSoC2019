@@ -5,4 +5,4 @@ cd Submodules/dolfinx/cpp/build && \
 
 cd ../../python
 
-pip3 install -e .
+python3 setup.py install 
