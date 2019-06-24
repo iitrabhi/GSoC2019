@@ -57,8 +57,8 @@ jobs:
       - checkout # check out the code in the project directory
       - run: *list-files
       - run: *pull-submodules
-      #- run: *demos-python
-      #- run: *demos-cpp
+      - run: *demos-python
+      - run: *demos-cpp
       - run: *install-meshio
       - run: *build-dolfin
       - run: *new-mesh-workflow

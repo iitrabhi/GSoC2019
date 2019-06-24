@@ -17,7 +17,9 @@ int main(int argc, char* argv[])
   
   std::cout<<mesh_2d->topology().str(true);
  
-  auto mvc = dolfin::mesh::MeshValueCollection<int>(mesh_2d,dummy_mesh.line_no,dummy_mesh.cell_data,1);
+  auto mvc = dolfin::mesh::MeshValueCollection<int>(mesh_2d,1,
+    dummy_mesh.points,dummy_mesh.line_no,dummy_mesh.cell_data);
+  
   std::cout<<"MVC size: "<< mvc.size() <<std::endl;
   auto mvcval = mvc.values();
 
