@@ -2,10 +2,10 @@
   <Domain>
     <Grid Name="Grid">
       <Geometry GeometryType="XYZ">
-        <DataItem DataType="Float" Dimensions="142 3" Format="HDF" Precision="8">mesh_2d.h5:/data0</DataItem>
+        <DataItem DataType="Float" Dimensions="29 3" Format="HDF" Precision="8">mesh_2d.h5:/data0</DataItem>
       </Geometry>
-      <Topology NumberOfElements="242" TopologyType="Triangle">
-        <DataItem DataType="Int" Dimensions="242 3" Format="HDF" Precision="8">mesh_2d.h5:/data1</DataItem>
+      <Topology NumberOfElements="40" TopologyType="Triangle">
+        <DataItem DataType="Int" Dimensions="40 3" Format="HDF" Precision="8">mesh_2d.h5:/data1</DataItem>
       </Topology>
     </Grid>
   </Domain>

@@ -8,7 +8,7 @@ cd  Submodules/dolfinx/cpp && \
 	mkdir build && \
 	cd build && \
 	cmake  .. && \
-	make install
+	make install -j 2
 
 cd ../../python
 
