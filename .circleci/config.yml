@@ -40,7 +40,7 @@ new-mesh-workflow: &new-mesh-workflow
 list-files: &list-files
   name: Get folder tree
   command: |
-    ls
+    ls -a
 
 pull-submodules: &pull-submodules
   name: "Pull Submodules"
