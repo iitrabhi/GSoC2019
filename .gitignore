@@ -35,7 +35,7 @@ DOLFINConfigVersion.cmake
 UseDOLFIN.cmake
 dolfin-config-version.cmake
 
-.cache
+
 .ipynb_checkpoints
 .idea
 .fltk

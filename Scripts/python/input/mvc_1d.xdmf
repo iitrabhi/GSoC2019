@@ -11,6 +11,5 @@
         <DataItem DataType="Int" Dimensions="10" Format="HDF" Precision="8">mvc_1d.h5:/data2</DataItem>
       </Attribute>
     </Grid>
-    <Information Name="Information"><![CDATA[<main/>]]></Information>
   </Domain>
 </Xdmf>

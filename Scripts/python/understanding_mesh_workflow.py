@@ -39,12 +39,12 @@ meshio.write("input/mvc_1d.xdmf", meshio.Mesh(
 ))
 
 with dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/mesh_2d.xdmf") as xdmf_infile:
-    mesh_2d = xdmf_infile.read_mesh(dolfin.MPI.comm_world, dolfin.cpp.mesh.GhostMode.none)
+	mesh_2d = xdmf_infile.read_mesh(dolfin.MPI.comm_world, dolfin.cpp.mesh.GhostMode.none)
 
 mvc = dolfin.MeshValueCollection("size_t", mesh_2d, 1)
 
 with dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/mvc_1d.xdmf") as xdmf_infile:
-    mvc = xdmf_infile.read_mvc_size_t(mesh_2d, "name_to_read")
+	mvc = xdmf_infile.read_mvc_size_t(mesh_2d, "name_to_read")
 
 print("Constructing MeshFunction from MeshValueCollection")
 mf = dolfin.cpp.mesh.MeshFunctionSizet(mesh_2d, mvc, 1)
