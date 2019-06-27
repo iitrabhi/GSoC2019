@@ -33,7 +33,21 @@ new-mesh-workflow: &new-mesh-workflow
     cmake ..
     make
     ./demo_mesh_workflow 
-    cd ../../../python
+
+new-mesh-workflow-no-xdmf: &new-mesh-workflow-no-xdmf
+  name: Run new-mesh-workflow-no-xdmf (CPP, Python, serial)
+  command: |
+    cd Scripts/cpp/new-mesh-workflow-no-xdmf
+    mkdir build
+    cd build
+    cmake ..
+    make
+    ./demo_mesh_workflow 
+
+new-mesh-workflow-py: &new-mesh-workflow-py
+  name: Run new-mesh-workflow (Python, serial)
+  command: |
+    cd Scripts/python
     python3 new_mesh_workflow.py
 
 
@@ -60,5 +74,4 @@ jobs:
       - run: *install-meshio
       - run: *build-dolfin
       - run: *demos-cpp
-      - run: *demos-python
       - run: *new-mesh-workflow
