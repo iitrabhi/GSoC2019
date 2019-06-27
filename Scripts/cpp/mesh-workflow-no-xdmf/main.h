@@ -1,9 +1,10 @@
 class DummyMesh{
 public:
-       std::vector<std::vector<std::int32_t>> cells {{ 26, 4},
-        {4, 17},
-        {17, 15},
-        {15,  27}} ;
+       std::vector<std::vector<std::int32_t>> cells {
+        {3, 13},
+        {13, 14},
+        {14, 15},
+        {0,  15}} ;
        std::vector<std::int32_t> cell_data {
               444,
               444,

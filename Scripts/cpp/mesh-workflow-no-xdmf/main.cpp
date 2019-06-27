@@ -3,8 +3,8 @@
 #include "main.h"
 using namespace dolfin;
 int main(int argc, char* argv[])
-{ auto show_connectivity = true;
-  auto show_gmsh_dolfin_map = true;
+{ auto show_connectivity = false;
+  auto show_gmsh_dolfin_map = false;
 
   auto dummy_mesh = DummyMesh();
   auto vect =dummy_mesh.points; 
@@ -54,23 +54,26 @@ int main(int argc, char* argv[])
   }
 
   if(show_gmsh_dolfin_map){
-    for (int i=0; i<mesh_2d->topology().size(0); ++i){
-      auto ver = mesh::MeshEntity(*mesh_2d, 0, i);
-      mesh::Vertex vert (ver);
-      std::cout<<"Points: X: "<<vert.x()[0]<<" Y: "<<vert.x()[1]<<" Z: "<<vert.x()[2]<<std::endl;
+      int dim =1;
+      std::vector<std::int32_t> v(2);
+      std::map<std::vector<int>, size_t> vertex_edge_map;
+      for (auto& m : mesh::MeshRange<mesh::MeshEntity>(*mesh_2d, 1))
+      {
+        if (dim == 0)
+          v[0] = m.global_index();
+        else
+        {
+          v.clear();
+          for (auto& vtx : mesh::EntityRange<mesh::Vertex>(m))
+            v.push_back(vtx.global_index());
+          std::sort(v.begin(), v.end());
+        }
 
-      std::vector<double> dolfin_points{vert.x()[0],vert.x()[1],vert.x()[2]};
-      auto itr = co_ord_point_map.find(dolfin_points);
-      if (itr != std::end(co_ord_point_map)) {     
-          int v = itr->second;         
-          std::cout <<"Dolfin find: "<< v << std::endl;
+        vertex_edge_map[v]=m.index();
+        std::cout<<"Edge: "<<m.index()<<"::"<< v[0]<<":"<< v[1]<<std::endl;
       }
-    }
-
-
-
-
-    
+      auto map_it = vertex_edge_map.find({3, 13});
+      std::cout<<"Edge Number:"<<map_it->second<<std::endl;
   }
 
 
@@ -81,10 +84,11 @@ int main(int argc, char* argv[])
 
 
 
-  if(false){
+
+  if(true){
  
     auto mvc = dolfin::mesh::MeshValueCollection<int>(mesh_2d,1,
-      dummy_mesh.points,dummy_mesh.line_no,dummy_mesh.cell_data);
+      dummy_mesh.cells,dummy_mesh.cell_data);
     
     std::cout<<"MVC size: "<< mvc.size() <<std::endl;
     auto mvcval = mvc.values();
