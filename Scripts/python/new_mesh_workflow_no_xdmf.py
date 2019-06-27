@@ -37,8 +37,6 @@ mesh_from_array = dolfin.cpp.mesh.Mesh(
     [], 
     dolfin.cpp.mesh.GhostMode.none)
 
-print('Hi')
-
 mvc_from_array = dolfin.MeshValueCollection("size_t", 
 	mesh_from_array,
 	1, 

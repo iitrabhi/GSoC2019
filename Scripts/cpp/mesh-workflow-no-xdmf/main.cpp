@@ -77,14 +77,6 @@ int main(int argc, char* argv[])
   }
 
 
-
-
-
-
-
-
-
-
   if(true){
  
     auto mvc = dolfin::mesh::MeshValueCollection<int>(mesh_2d,1,
