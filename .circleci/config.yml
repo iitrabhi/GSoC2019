@@ -52,13 +52,13 @@ version: 2
 jobs:
   build:
     docker: # use the docker executor type; machine and macos executors are also supported
-      - image: quay.io/fenicsproject/dolfinx:latest # the primary container, where your job's commands are run
+      - image: quay.io/fenicsproject/dolfinx:real # the primary container, where your job's commands are run
     steps:
       - checkout # check out the code in the project directory
       - run: *list-files
       - run: *pull-submodules
-      - run: *demos-python
       - run: *demos-cpp
+      - run: *demos-python
       - run: *install-meshio
       - run: *build-dolfin
       - run: *new-mesh-workflow
