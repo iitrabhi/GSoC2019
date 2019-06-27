@@ -37,7 +37,7 @@ new-mesh-workflow: &new-mesh-workflow
 new-mesh-workflow-no-xdmf: &new-mesh-workflow-no-xdmf
   name: Run new-mesh-workflow-no-xdmf (CPP, Python, serial)
   command: |
-    cd Scripts/cpp/new-mesh-workflow-no-xdmf
+    cd Scripts/cpp/mesh-workflow-no-xdmf
     mkdir build
     cd build
     cmake ..
