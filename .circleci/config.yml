@@ -75,3 +75,4 @@ jobs:
       - run: *build-dolfin
       - run: *demos-cpp
       - run: *new-mesh-workflow
+      - run: *new-mesh-workflow-no-xdmf
