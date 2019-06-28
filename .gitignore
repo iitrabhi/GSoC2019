@@ -71,3 +71,4 @@ build/
 .bash_history
 .local/
 .ipython/
+.jupyter/
