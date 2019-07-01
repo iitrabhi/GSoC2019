@@ -17,7 +17,12 @@ Once the docker system in installed and running open terminal and run:
 
 ```
 cd /path/to/this/repo
-docker build --target notebook -t fenicsx .
+docker build --target notebook -t dolfinx_notebook .
+```
+
+```
+cd /path/to/this/repo
+docker build -t dolfinx .
 ```
 
 Note that you should have the file named Dockerfile in the directory where you run docker build.
@@ -27,7 +32,7 @@ Note that you should have the file named Dockerfile in the directory where you r
 After building the docker image you can start a Ipython notebook, just run:
 
 ```
-docker run -p 8888:8888 fenicsx:latest
+docker run -p 8888:8888 dolfinx_notebook:latest
 ``` 
 To share share a host directory with the container run:
 
