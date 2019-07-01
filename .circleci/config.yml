@@ -50,6 +50,11 @@ new-mesh-workflow-py: &new-mesh-workflow-py
     cd Scripts/python
     python3 new_mesh_workflow.py
 
+poisson-subdomain: &poisson-subdomain
+  name: Run poisson-subdomain(Python, serial)
+  command: |
+    cd Scripts/python
+    python3 poisson_subdomain.py
 
 list-files: &list-files
   name: Get folder tree
@@ -77,3 +82,4 @@ jobs:
       - run: *demos-python
       - run: *new-mesh-workflow
       - run: *new-mesh-workflow-no-xdmf
+      - run: *poisson-subdomain
