@@ -72,3 +72,4 @@ build/
 .local/
 .ipython/
 .jupyter/
+Scripts/cpp/xdmf/cmake-build-debug/

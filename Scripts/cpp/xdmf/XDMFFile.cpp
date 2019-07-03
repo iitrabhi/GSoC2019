@@ -6,9 +6,9 @@
 #include <assert.h>
 #include <map>
 
-#include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <pybind11/stl_bind.h>
+#include "include/pybind11/pybind11.h"
+#include "include/pybind11/stl.h"
+#include "include/pybind11/stl_bind.h"
 
 std::pair<std::string, int> get_cell_type(const pugi::xml_node& topology_node)
 {
@@ -118,8 +118,7 @@ XDMFFile::~XDMFFile() {
 
 }
 
-template <typename T>
-mesh::MeshValueCollection<T>
+template <typename T>mesh::MeshValueCollection<T>
 XDMFFile::read_mesh_value_collection(std::shared_ptr<const mesh::Mesh> mesh,
                                      std::string name) const
 {
