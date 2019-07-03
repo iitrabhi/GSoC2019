@@ -7,6 +7,13 @@ from dolfin.plotting import plot
 import matplotlib
 
 
+
+
+# Define input data
+from ufl import SpatialCoordinate, inner, grad, lhs, rhs, dot, exp, Measure, dx, ds
+from dolfin.fem import assemble_scalar
+from dolfin import FunctionSpace, TrialFunction, TestFunction, DirichletBC, Function, solve, cpp,fem    
+
 geom = Geometry()
 
 mesh_ele_size = .2
@@ -53,10 +60,12 @@ points, cells, cell_data, field_data = msh.points, msh.cells, msh.cell_data, msh
 mesh = dolfin.cpp.mesh.Mesh(
     dolfin.MPI.comm_world, 
     dolfin.cpp.mesh.CellType.Type.triangle, 
-    points,
+    points[:,:2],# Converting to 2D
     cells['triangle'], 
     [], 
     dolfin.cpp.mesh.GhostMode.none)
+
+mesh.geometry.coord_mapping = fem.create_coordinate_map(mesh)
 
 mvc_boundaries = dolfin.MeshValueCollection("size_t", 
     mesh,
@@ -86,6 +95,56 @@ print(cell_data['line'])
 print(field_data)
 print(boundaries.array())
 
+a0 = 1.0
+a1 = 0.01
+x = SpatialCoordinate(mesh)
+g_L = exp(- 10*(- pow(x[1] - 0.5, 2)))
+g_R = 1.0
+f = 1.0
 
+
+
+# Define function space and basis functions
+V = FunctionSpace(mesh, ("CG", 2))
+u = TrialFunction(V)
+v = TestFunction(V)
+
+
+u5 = Function(V)
+with u5.vector().localForm() as bc_local:
+    bc_local.set(5.0)
+
+u0 = Function(V)
+with u0.vector().localForm() as bc_local:
+    bc_local.set(0.0)
+
+
+# Define Dirichlet boundary conditions at top and bottom boundaries
+bcs = [DirichletBC(V, u5, boundaries.where_equal(2)),
+       DirichletBC(V, u0, boundaries.where_equal(4))]
+
+dx = dx(subdomain_data=domains)
+ds = ds(subdomain_data=boundaries)
+
+# Define variational form
+F = (inner(a0*grad(u), grad(v))*dx(5) + inner(a1*grad(u), grad(v))*dx(6)
+     - g_L*v*ds(1) - g_R*v*ds(3)
+     - f*v*dx(5) - f*v*dx(6))
+
+
+# Separate left and right hand sides of equation
+a, L = lhs(F), rhs(F)
+
+# Solve problem
+u = Function(V)
+solve(a == L, u, bcs)
+
+
+bb_tree = cpp.geometry.BoundingBoxTree(mesh, 2)
+print(u([1.0, 1.0], bb_tree)[0])
+#print((u.vector().array))
+
+file = dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/saved_function.xdmf")
+file.write(u)
 
 pass

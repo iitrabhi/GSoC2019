@@ -10,13 +10,11 @@ meshio.write("input/unit_square.xdmf", meshio.Mesh(
     cells={"triangle": cells["triangle"]},
     field_data=field_data))
 
-print(field_data)
-
 with dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/unit_square.xdmf") as xdmf_infile:
     mesh_2d = xdmf_infile.read_mesh(dolfin.MPI.comm_world, dolfin.cpp.mesh.GhostMode.none)
     tags = xdmf_infile.read_information()
     print(tags)
-    
+
 # mvc = dolfin.MeshValueCollection("size_t", mesh_2d, 1)
 # 
 # with dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/mvc_1d.xdmf") as xdmf_infile:
