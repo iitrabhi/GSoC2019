@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
  
   //std::cout<<mesh_2d->topology().str(true);
 
-  auto mapOfTag = xdmf_file.read_tags();
+  auto mapOfTag = xdmf_file.read_information();
 
   std::cout<<"Tags: "<<std::endl;
 
