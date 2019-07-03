@@ -3,6 +3,9 @@ from pygmsh import generate_mesh
 import meshio
 import dolfin
 import dolfin.io
+from dolfin.plotting import plot
+import matplotlib
+
 
 geom = Geometry()
 
@@ -45,7 +48,7 @@ geom.add_physical(ps2, label="OBSTACLE")
 #print("\n".join(geom._GMSH_CODE))
 
 msh = generate_mesh(geom)
-points, cells, cell_data = msh.points, msh.cells, msh.cell_data
+points, cells, cell_data, field_data = msh.points, msh.cells, msh.cell_data, msh.field_data
 
 mesh = dolfin.cpp.mesh.Mesh(
     dolfin.MPI.comm_world, 
@@ -73,9 +76,16 @@ boundaries = dolfin.cpp.mesh.MeshFunctionSizet(mesh, mvc_boundaries, 0)
 
 print("Boundaries")
 print(mvc_boundaries.values())
+#print(boundaries.array())
+#print("Domains")
+#print(mvc_subdomain.values())
+
+print(cells['line'])
+print(cell_data['line'])
+
+print(field_data)
 print(boundaries.array())
-print("Domains")
-print(mvc_subdomain.values())
-print(domains.array())
+
+
 
 pass

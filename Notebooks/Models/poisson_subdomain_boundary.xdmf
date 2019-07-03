@@ -2,13 +2,13 @@
   <Domain>
     <Grid Name="Grid">
       <Geometry GeometryType="XY">
-        <DataItem DataType="Float" Dimensions="3376 2" Format="HDF" Precision="8">poisson_subdomain_boundary.h5:/data0</DataItem>
+        <DataItem DataType="Float" Dimensions="51 2" Format="HDF" Precision="8">poisson_subdomain_boundary.h5:/data0</DataItem>
       </Geometry>
-      <Topology NumberOfElements="200" TopologyType="Polyline">
-        <DataItem DataType="Int" Dimensions="200 2" Format="HDF" Precision="8">poisson_subdomain_boundary.h5:/data1</DataItem>
+      <Topology NumberOfElements="21" TopologyType="Polyline">
+        <DataItem DataType="Int" Dimensions="21 2" Format="HDF" Precision="8">poisson_subdomain_boundary.h5:/data1</DataItem>
       </Topology>
       <Attribute AttributeType="Scalar" Center="Cell" Name="boundaries">
-        <DataItem DataType="Int" Dimensions="200" Format="HDF" Precision="8">poisson_subdomain_boundary.h5:/data2</DataItem>
+        <DataItem DataType="Int" Dimensions="21" Format="HDF" Precision="8">poisson_subdomain_boundary.h5:/data2</DataItem>
       </Attribute>
     </Grid>
   </Domain>

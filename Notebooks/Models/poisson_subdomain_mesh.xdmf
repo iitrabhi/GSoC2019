@@ -2,13 +2,13 @@
   <Domain>
     <Grid Name="Grid">
       <Geometry GeometryType="XY">
-        <DataItem DataType="Float" Dimensions="3376 2" Format="HDF" Precision="8">poisson_subdomain_mesh.h5:/data0</DataItem>
+        <DataItem DataType="Float" Dimensions="51 2" Format="HDF" Precision="8">poisson_subdomain_mesh.h5:/data0</DataItem>
       </Geometry>
-      <Topology NumberOfElements="6550" TopologyType="Triangle">
-        <DataItem DataType="Int" Dimensions="6550 3" Format="HDF" Precision="8">poisson_subdomain_mesh.h5:/data1</DataItem>
+      <Topology NumberOfElements="79" TopologyType="Triangle">
+        <DataItem DataType="Int" Dimensions="79 3" Format="HDF" Precision="8">poisson_subdomain_mesh.h5:/data1</DataItem>
       </Topology>
       <Attribute AttributeType="Scalar" Center="Cell" Name="subdomain">
-        <DataItem DataType="Int" Dimensions="6550" Format="HDF" Precision="8">poisson_subdomain_mesh.h5:/data2</DataItem>
+        <DataItem DataType="Int" Dimensions="79" Format="HDF" Precision="8">poisson_subdomain_mesh.h5:/data2</DataItem>
       </Attribute>
     </Grid>
   </Domain>
