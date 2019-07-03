@@ -6,3 +6,6 @@ cd  Scripts/cpp/mesh-workflow-no-xdmf/build/ && \
 	make -j 2
 
 ./demo_mesh_workflow
+
+cd ../../../python
+python3 poisson_subdomain.py

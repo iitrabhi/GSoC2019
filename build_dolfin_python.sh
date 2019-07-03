@@ -1,4 +1,4 @@
 #! /bin/bash
 
 cd Submodules/dolfinx/python && \
-	python3 setup.py install 
+	pip3 install -e . --upgrade

@@ -1,8 +1,8 @@
 #! /bin/bash
 
 cd Submodules/dolfinx/cpp/build && \
-	make install
+	make install -j 2
 
-#cd ../../python
+cd ../../python
 
-#python3 setup.py install 
+pip3 install -e . --upgrade

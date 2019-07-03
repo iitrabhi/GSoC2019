@@ -42,10 +42,10 @@ geom.add_physical(l1, label="BOTTOM")
 geom.add_physical(ps1, label="DOMAIN")
 geom.add_physical(ps2, label="OBSTACLE")
 
-print("\n".join(geom._GMSH_CODE))
+#print("\n".join(geom._GMSH_CODE))
 
-mesh = generate_mesh(geom)
-points, cells, cell_data = mesh.points, mesh.cells, mesh.cell_data
+msh = generate_mesh(geom)
+points, cells, cell_data = msh.points, msh.cells, msh.cell_data
 
 mesh = dolfin.cpp.mesh.Mesh(
     dolfin.MPI.comm_world, 
@@ -55,21 +55,27 @@ mesh = dolfin.cpp.mesh.Mesh(
     [], 
     dolfin.cpp.mesh.GhostMode.none)
 
+mvc_boundaries = dolfin.MeshValueCollection("size_t", 
+    mesh,
+    1, 
+    cells["line"].tolist(), 
+    cell_data["line"]['gmsh:physical'].tolist())
+
 mvc_subdomain = dolfin.MeshValueCollection("size_t", 
     mesh,
     2, 
     cells["triangle"].tolist(), 
     cell_data["triangle"]['gmsh:physical'].tolist())
 
-
-mvc_boundaries = dolfin.MeshValueCollection("size_t", 
-	mesh,
-	1, 
-	cells["line"].tolist(), 
-	cell_data["line"]['gmsh:physical'].tolist())
-
 print("Constructing MeshFunction from MeshValueCollection")
 domains = dolfin.cpp.mesh.MeshFunctionSizet(mesh, mvc_subdomain, 0)
 boundaries = dolfin.cpp.mesh.MeshFunctionSizet(mesh, mvc_boundaries, 0)
+
+print("Boundaries")
+print(mvc_boundaries.values())
+print(boundaries.array())
+print("Domains")
+print(mvc_subdomain.values())
+print(domains.array())
 
 pass
