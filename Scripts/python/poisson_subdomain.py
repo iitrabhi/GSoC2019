@@ -13,7 +13,7 @@ from dolfin import FunctionSpace, TrialFunction, TestFunction, DirichletBC, Func
 
 geom = Geometry()
 
-mesh_ele_size = .2
+mesh_ele_size = .02
 p1 = geom.add_point([0.0, 0.0, 0], lcar=mesh_ele_size)
 p2 = geom.add_point([0.0, 1.0, 0], lcar=mesh_ele_size)
 p3 = geom.add_point([1.0, 1.0, 0], lcar=mesh_ele_size)
@@ -143,7 +143,7 @@ solve(a == L, u, bcs)
 
 
 bb_tree = cpp.geometry.BoundingBoxTree(mesh, 2)
-print(u([0.0, 1.0], bb_tree)[0])
+print(u([0.5, 0.5], bb_tree)[0])
 #print((u.vector().array))
 
 file = dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/saved_function.xdmf")
