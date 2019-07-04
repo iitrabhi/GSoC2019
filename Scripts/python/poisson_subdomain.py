@@ -6,9 +6,6 @@ import dolfin.io
 from dolfin.plotting import plot
 import matplotlib
 
-
-
-
 # Define input data
 from ufl import SpatialCoordinate, inner, grad, lhs, rhs, dot, exp, Measure, dx, ds
 from dolfin.fem import assemble_scalar
@@ -83,17 +80,21 @@ print("Constructing MeshFunction from MeshValueCollection")
 domains = dolfin.cpp.mesh.MeshFunctionSizet(mesh, mvc_subdomain, 0)
 boundaries = dolfin.cpp.mesh.MeshFunctionSizet(mesh, mvc_boundaries, 0)
 
-print("Boundaries")
-print(mvc_boundaries.values())
+#print("Boundaries")
+#print(mvc_boundaries.values())
 #print(boundaries.array())
 #print("Domains")
 #print(mvc_subdomain.values())
 
-print(cells['line'])
-print(cell_data['line'])
+#print(cells['line'])
+#print(cell_data['line'])
 
-print(field_data)
-print(boundaries.array())
+#print(field_data)
+#print(boundaries.array())
+#print(boundaries.where_equal(1))
+#print(boundaries.where_equal(2))
+#print(boundaries.where_equal(3))
+#print(boundaries.where_equal(4))
 
 a0 = 1.0
 a1 = 0.01
@@ -101,8 +102,6 @@ x = SpatialCoordinate(mesh)
 g_L = exp(- 10*(- pow(x[1] - 0.5, 2)))
 g_R = 1.0
 f = 1.0
-
-
 
 # Define function space and basis functions
 V = FunctionSpace(mesh, ("CG", 2))
@@ -120,16 +119,19 @@ with u0.vector().localForm() as bc_local:
 
 
 # Define Dirichlet boundary conditions at top and bottom boundaries
-bcs = [DirichletBC(V, u5, boundaries.where_equal(2)),
-       DirichletBC(V, u0, boundaries.where_equal(4))]
+bcs = [DirichletBC(V, u5, boundaries.where_equal(field_data['TOP'][0])),
+       DirichletBC(V, u0, boundaries.where_equal(field_data['BOTTOM'][0]))]
 
 dx = dx(subdomain_data=domains)
 ds = ds(subdomain_data=boundaries)
 
 # Define variational form
-F = (inner(a0*grad(u), grad(v))*dx(5) + inner(a1*grad(u), grad(v))*dx(6)
-     - g_L*v*ds(1) - g_R*v*ds(3)
-     - f*v*dx(5) - f*v*dx(6))
+F = (inner(a0*grad(u), grad(v))*dx(field_data['DOMAIN'][0]) + 
+    inner(a1*grad(u), grad(v))*dx(field_data['OBSTACLE'][0])
+     - g_L*v*ds(field_data['LEFT'][0]) 
+     - g_R*v*ds(field_data['RIGHT'][0])
+     - f*v*dx(field_data['DOMAIN'][0]) 
+     - f*v*dx(field_data['OBSTACLE'][0]))
 
 
 # Separate left and right hand sides of equation
@@ -141,7 +143,7 @@ solve(a == L, u, bcs)
 
 
 bb_tree = cpp.geometry.BoundingBoxTree(mesh, 2)
-print(u([1.0, 1.0], bb_tree)[0])
+print(u([0.0, 1.0], bb_tree)[0])
 #print((u.vector().array))
 
 file = dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/saved_function.xdmf")
