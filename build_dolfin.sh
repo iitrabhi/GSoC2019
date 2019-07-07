@@ -3,6 +3,6 @@
 cd Submodules/dolfinx/cpp/build && \
 	make install -j 2
 
-cd ../../python
+#cd ../../python
 
-pip3 install -e . --upgrade
+#pip3 install -e . --upgrade

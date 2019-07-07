@@ -26,6 +26,7 @@ int main(int argc, char* argv[])
 	//------------------write mesh---------------------------
 	dolfin::io::XDMFFile xdmf_file_2(MPI_COMM_WORLD,"../input/unit_square_from_dolfin.xdmf");
 	xdmf_file_2.write(*mesh);
+	xdmf_file_2.write(map_of_info);
 	return 0;
 	//------------------write function---------------------------
 	//io::XDMFFile file(MPI_COMM_WORLD,"u.xdmf");

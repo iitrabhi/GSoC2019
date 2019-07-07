@@ -82,4 +82,4 @@ jobs:
       - run: *demos-python
       - run: *new-mesh-workflow
       - run: *new-mesh-workflow-no-xdmf
-      - run: *poisson-subdomain
+      #- run: *poisson-subdomain
