@@ -52,7 +52,7 @@ geom.add_physical(ps2, label="OBSTACLE")
 #print("\n".join(geom._GMSH_CODE))
 
 msh = generate_mesh(geom)
-points, cells, cell_data, field_data = msh.points, msh.cells, msh.cell_data, msh.field_data
+points, cells, cell_data, boundary = msh.points, msh.cells, msh.cell_data, msh.field_data
 
 mesh = dolfin.cpp.mesh.Mesh(
     dolfin.MPI.comm_world, 
@@ -119,19 +119,19 @@ with u0.vector().localForm() as bc_local:
 
 
 # Define Dirichlet boundary conditions at top and bottom boundaries
-bcs = [DirichletBC(V, u5, boundaries.where_equal(field_data['TOP'][0])),
-       DirichletBC(V, u0, boundaries.where_equal(field_data['BOTTOM'][0]))]
+bcs = [DirichletBC(V, u5, boundaries.where_equal(boundary['TOP'][0])),
+       DirichletBC(V, u0, boundaries.where_equal(boundary['BOTTOM'][0]))]
 
 dx = dx(subdomain_data=domains)
 ds = ds(subdomain_data=boundaries)
 
 # Define variational form
-F = (inner(a0*grad(u), grad(v))*dx(field_data['DOMAIN'][0]) + 
-    inner(a1*grad(u), grad(v))*dx(field_data['OBSTACLE'][0])
-     - g_L*v*ds(field_data['LEFT'][0]) 
-     - g_R*v*ds(field_data['RIGHT'][0])
-     - f*v*dx(field_data['DOMAIN'][0]) 
-     - f*v*dx(field_data['OBSTACLE'][0]))
+F = (inner(a0*grad(u), grad(v))*dx(boundary['DOMAIN'][0]) + 
+    inner(a1*grad(u), grad(v))*dx(boundary['OBSTACLE'][0])
+     - g_L*v*ds(boundary['LEFT'][0]) 
+     - g_R*v*ds(boundary['RIGHT'][0])
+     - f*v*dx(boundary['DOMAIN'][0]) 
+     - f*v*dx(boundary['OBSTACLE'][0]))
 
 
 # Separate left and right hand sides of equation

@@ -21,13 +21,13 @@ ll = geom.add_line_loop(lines=[l0, l1, l2, l3])
 ps = geom.add_plane_surface(ll)
 
 # Tag line and surface
-geom.add_physical(l3, label=444)
-geom.add_physical(ps, label=456)
+geom.add_physical(l3, label="LINE")
+geom.add_physical(ps, label="SURFACE")
 
 print("\n".join(geom._GMSH_CODE))
 
 mesh = generate_mesh(geom)
-points, cells, cell_data = mesh.points, mesh.cells, mesh.cell_data
+points, cells, cell_data, boundary = mesh.points, mesh.cells, mesh.cell_data, mesh.field_data
 
 mesh_from_array = dolfin.cpp.mesh.Mesh(
     dolfin.MPI.comm_world, 
@@ -45,4 +45,13 @@ mvc_from_array = dolfin.MeshValueCollection("size_t",
 
 print("Constructing MeshFunction from MeshValueCollection")
 mf = dolfin.cpp.mesh.MeshFunctionSizet(mesh_from_array, mvc_from_array, 1)
+
+# ToDo: Convert field data to String:Int
+# or make read and write info more general.
+boundary['LINE'] = 1
+boundary['SURFACE'] = 2
+
+file = dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/mesh_from_dolfin.xdmf")
+file.write(mesh_from_array)
+file.write(boundary)
 pass
