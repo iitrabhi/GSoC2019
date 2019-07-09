@@ -67,14 +67,14 @@ mesh.geometry.coord_mapping = fem.create_coordinate_map(mesh)
 mvc_boundaries = dolfin.MeshValueCollection("size_t", 
     mesh,
     1, 
-    cells["line"].tolist(), 
-    cell_data["line"]['gmsh:physical'].tolist())
+    cells["line"], 
+    cell_data["line"]['gmsh:physical'])
 
 mvc_subdomain = dolfin.MeshValueCollection("size_t", 
     mesh,
     2, 
-    cells["triangle"].tolist(), 
-    cell_data["triangle"]['gmsh:physical'].tolist())
+    cells["triangle"], 
+    cell_data["triangle"]['gmsh:physical'])
 
 print("Constructing MeshFunction from MeshValueCollection")
 domains = dolfin.cpp.mesh.MeshFunctionSizet(mesh, mvc_subdomain, 0)

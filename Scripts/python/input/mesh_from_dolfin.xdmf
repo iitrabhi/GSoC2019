@@ -10,11 +10,5 @@
         <DataItem Dimensions="142 3" Format="HDF">mesh_from_dolfin.h5:/Mesh/mesh/geometry</DataItem>
       </Geometry>
     </Grid>
-    <Information Name="BoundaryTags"><![CDATA[<?xml version="1.0"?>
-<main>
-  <map key="LINE">1</map>
-  <map key="SURFACE">2</map>
-</main>
-]]></Information>
   </Domain>
 </Xdmf>

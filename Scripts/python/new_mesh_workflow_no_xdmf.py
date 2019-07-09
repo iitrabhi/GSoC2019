@@ -40,8 +40,8 @@ mesh_from_array = dolfin.cpp.mesh.Mesh(
 mvc_from_array = dolfin.MeshValueCollection("size_t", 
 	mesh_from_array,
 	1, 
-	cells["line"].tolist(), 
-	cell_data["line"]['gmsh:physical'].tolist())
+	cells["line"], 
+	cell_data["line"]['gmsh:physical'])
 
 print("Constructing MeshFunction from MeshValueCollection")
 mf = dolfin.cpp.mesh.MeshFunctionSizet(mesh_from_array, mvc_from_array, 1)
@@ -53,5 +53,5 @@ boundary['SURFACE'] = 2
 
 file = dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/mesh_from_dolfin.xdmf")
 file.write(mesh_from_array)
-file.write(boundary)
+#file.write(boundary)
 pass
