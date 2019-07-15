@@ -24,10 +24,15 @@ ps = geom.add_plane_surface(ll)
 geom.add_physical(l3, label="LINE")
 geom.add_physical(ps, label="SURFACE")
 
-print("\n".join(geom._GMSH_CODE))
+#print("\n".join(geom._GMSH_CODE))
 
 mesh = generate_mesh(geom)
 points, cells, cell_data, boundary = mesh.points, mesh.cells, mesh.cell_data, mesh.field_data
+
+comm = dolfin.MPI.comm_world
+rank = comm.Get_rank()
+print('My rank is ',rank)
+
 
 mesh_from_array = dolfin.cpp.mesh.Mesh(
     dolfin.MPI.comm_world, 
@@ -36,6 +41,8 @@ mesh_from_array = dolfin.cpp.mesh.Mesh(
     cells['triangle'], 
     [], 
     dolfin.cpp.mesh.GhostMode.none)
+
+#print(cells["triangle"])
 
 mvc_from_array = dolfin.MeshValueCollection("size_t", 
 	mesh_from_array,

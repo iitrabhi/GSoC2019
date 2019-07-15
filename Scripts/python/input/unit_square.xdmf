@@ -8,6 +8,5 @@
         <DataItem DataType="Int" Dimensions="242 3" Format="HDF" Precision="8">unit_square.h5:/data1</DataItem>
       </Topology>
     </Grid>
-    <Information Name="Information"><![CDATA[<main><map key="BOTTOM">1</map><map key="TOP">2</map><map key="LEFT">3</map><map key="RIGHT">4</map><map key="DOMAIN">5</map></main>]]></Information>
   </Domain>
 </Xdmf>
