@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  gdbserver:
+    image: docker-clion-dev-master_gdbserver
+    security_opt: # options needed for gdb debugging
+      - seccomp:unconfined
+      - apparmor:unconfined
+    container_name: dolfinx_debug_3
+    ports:
+      - "7776:22"
+      - "7777:7777"
+    volumes:
+      - ..:/root
+    stdin_open: true
+    tty: true

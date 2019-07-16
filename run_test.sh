@@ -18,7 +18,7 @@ b)
 cd  Scripts/cpp/io-xdmf/build/ && \
 	cmake ..
 	make -j 2
-	./io_xdmf;;
+	mpirun -n 2 ./io_xdmf;;
 c) ;;
 d) ;;
 esac

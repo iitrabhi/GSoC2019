@@ -36,3 +36,6 @@ target_link_libraries(${PROJECT_NAME} dolfin)
 set(test_parameters -np 3 "./${PROJECT_NAME}")
 add_test(NAME ${PROJECT_NAME}_mpi COMMAND "mpirun" ${test_parameters})
 add_test(NAME ${PROJECT_NAME}_serial COMMAND ${PROJECT_NAME})
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0")
+set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O0")

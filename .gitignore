@@ -73,3 +73,8 @@ build/
 .ipython/
 .jupyter/
 Scripts/cpp/xdmf/cmake-build-debug/
+Scripts/cpp/io-xdmf/cmake-build-debug-remote-host/
+Scripts/cpp/mesh-workflow/cmake-build-default/
+Scripts/cpp/mesh-workflow/cmake-build-default-remote-host/
+Scripts/cpp/mesh-workflow-no-xdmf/cmake-build-debug-remote-host/
+Scripts/cpp/mesh-workflow/cmake-build-release/
