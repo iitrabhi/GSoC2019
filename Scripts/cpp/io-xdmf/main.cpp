@@ -10,7 +10,7 @@ int main(int argc, char* argv[])
   	//------------------Constructor---------------------------
 	dolfin::io::XDMFFile xdmf_file(MPI_COMM_WORLD,"../input/unit_square.xdmf");
 	//------------------read_mesh---------------------------
-	auto mesh = std::make_shared<mesh::Mesh>(xdmf_file.read_mesh(MPI_COMM_WORLD,mesh::GhostMode::none));
+	auto mesh = std::make_shared<mesh::Mesh>(xdmf_file.read_mesh(mesh::GhostMode::none));
 	//------------------read_information---------------------------
 	auto map_of_info = xdmf_file.read_information();
 	//------------------print_information---------------------------

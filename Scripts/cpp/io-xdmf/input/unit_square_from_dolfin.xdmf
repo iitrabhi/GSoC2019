@@ -1,17 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>
 <Xdmf Version="3.0" xmlns:xi="http://www.w3.org/2001/XInclude">
-  <Information Name="BoundaryTags">
-    <![CDATA[<?xml version="1.0"?>
-      <main>
-        <map key="BOTTOM">1</map>
-        <map key="DOMAIN">5</map>
-        <map key="LEFT">3</map>
-        <map key="RIGHT">4</map>
-        <map key="TOP">2</map>
-      </main>
-      ]]>
-  </Information>
   <Domain>
     <Grid Name="mesh" GridType="Uniform">
       <Topology NumberOfElements="242" TopologyType="Triangle" NodesPerElement="3">
@@ -19,9 +8,16 @@
       </Topology>
       <Geometry GeometryType="XYZ">
         <DataItem Dimensions="142 3" Format="HDF">unit_square_from_dolfin.h5:/Mesh/mesh/geometry</DataItem>
-
       </Geometry>
     </Grid>
+    <Information Name="BoundaryTags"><![CDATA[<?xml version="1.0"?>
+<main>
+  <map key="BOTTOM">1</map>
+  <map key="DOMAIN">5</map>
+  <map key="LEFT">3</map>
+  <map key="RIGHT">4</map>
+  <map key="TOP">2</map>
+</main>
+]]></Information>
   </Domain>
-
 </Xdmf>
