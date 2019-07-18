@@ -7,6 +7,8 @@ int main(int argc, char* argv[])
 	common::SubSystemsManager::init_logging(argc, argv);
   	common::SubSystemsManager::init_petsc(argc, argv);
 
+  	std::cout<<"I am on process"<<dolfin::MPI::rank(comm)<<std::endl;
+
   	//------------------Constructor---------------------------
 	dolfin::io::XDMFFile xdmf_file(MPI_COMM_WORLD,"../input/unit_square.xdmf");
 	//------------------read_mesh---------------------------

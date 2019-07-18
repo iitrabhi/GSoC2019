@@ -1,23 +1,15 @@
 <Xdmf Version="3.0">
   <Domain>
     <Grid Name="Grid">
-
-    
       <Geometry GeometryType="XYZ">
         <DataItem DataType="Float" Dimensions="107 3" Format="HDF" Precision="8">tag_all.h5:/data0</DataItem>
       </Geometry>
-
-
       <Topology NumberOfElements="32" TopologyType="Polyline">
         <DataItem DataType="Int" Dimensions="32 2" Format="HDF" Precision="8">tag_all.h5:/data1</DataItem>
       </Topology>
-
-
       <Attribute AttributeType="Scalar" Center="Cell" Name="all_tags">
         <DataItem DataType="Int" Dimensions="32" Format="HDF" Precision="8">tag_all.h5:/data2</DataItem>
       </Attribute>
-
-
     </Grid>
   </Domain>
 </Xdmf>

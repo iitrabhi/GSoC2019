@@ -50,6 +50,8 @@ mvc_from_array = dolfin.MeshValueCollection("size_t",
 	cells["line"], 
 	cell_data["line"]['gmsh:physical'])
 
+print(mvc_from_array.values())
+
 print("Constructing MeshFunction from MeshValueCollection")
 mf = dolfin.cpp.mesh.MeshFunctionSizet(mesh_from_array, mvc_from_array, 1)
 
