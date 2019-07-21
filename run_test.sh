@@ -19,7 +19,11 @@ cd  Scripts/cpp/io-xdmf/build/ && \
 	cmake ..
 	make -j 2
 	mpirun -n 2 ./io_xdmf;;
-c) ;;
+c)cd  Scripts/cpp/mesh-workflow-new/build/ && \
+	#cmake ..
+	make -j 2
+
+./demo_mesh_workflow ;;
 d) ;;
 esac
 done

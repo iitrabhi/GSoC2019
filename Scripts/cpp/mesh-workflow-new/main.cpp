@@ -8,16 +8,17 @@ int main(int argc, char* argv[])
   common::SubSystemsManager::init_logging(argc, argv);
   common::SubSystemsManager::init_petsc(argc, argv);
 
-  dolfin::io::XDMFFile xdmf_file(MPI_COMM_WORLD,"../input/unit_square.xdmf");
-  //dolfin::io::XDMFFile xdmf_file(MPI_COMM_WORLD,"../input/mesh_2d.xdmf");
+  //dolfin::io::XDMFFile xdmf_file(MPI_COMM_WORLD,"../input/unit_square.xdmf");
+  dolfin::io::XDMFFile xdmf_file(MPI_COMM_WORLD,"../input/tag_all.xdmf");
  
 
-  auto mesh_2d = std::make_shared<mesh::Mesh>(xdmf_file.read_mesh(MPI_COMM_WORLD,mesh::GhostMode::none));
+  auto mesh_2d = std::make_shared<mesh::Mesh>(xdmf_file.read_mesh(mesh::GhostMode::none));
 
  
   //std::cout<<mesh_2d->topology().str(true);
 
-  auto mapOfTag = xdmf_file.read_information();
+  //auto mapOfTag = xdmf_file.read_information_size_t();
+  auto mapOfTag = xdmf_file.read_information_string();
 
   std::cout<<"Tags: "<<std::endl;
 
@@ -30,7 +31,7 @@ int main(int argc, char* argv[])
       std::string word = it->first;
 
       // Accessing VALUE from element pointed by it.
-      int number = it->second;
+      auto number = it->second;
 
       std::cout << word << " :: " << number << std::endl;
 
