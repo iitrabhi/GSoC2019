@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 	//------------------read_mesh---------------------------
 	auto mesh = std::make_shared<mesh::Mesh>(xdmf_file.read_mesh(mesh::GhostMode::none));
 	//------------------read_information---------------------------
-	auto map_of_info = xdmf_file.read_information();
+	auto map_of_info = xdmf_file.read_information_int();
 	//------------------print_information---------------------------
 	std::cout<<"Tags: "<<std::endl;
 	auto it = map_of_info.begin();
@@ -26,9 +26,9 @@ int main(int argc, char* argv[])
 	  it++;
 	}
 	//------------------write mesh---------------------------
-	dolfin::io::XDMFFile xdmf_file_2(MPI_COMM_WORLD,"../input/unit_square_from_dolfin.xdmf");
-	xdmf_file_2.write(*mesh);
-	xdmf_file_2.write(map_of_info);
+	//dolfin::io::XDMFFile xdmf_file_2(MPI_COMM_WORLD,"../input/unit_square_from_dolfin.xdmf");
+	//xdmf_file_2.write(*mesh);
+	//xdmf_file_2.write(map_of_info);
 	return 0;
 	//------------------write function---------------------------
 	//io::XDMFFile file(MPI_COMM_WORLD,"u.xdmf");
