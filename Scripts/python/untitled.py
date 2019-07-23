@@ -1,6 +1,6 @@
 import pygmsh
-from dolfin import (MPI, Cells, FacetRange, MeshFunction, MeshValueCollection,
-                    UnitSquareMesh, VertexRange, cpp)
+import meshio
+from dolfin import (MPI, MeshValueCollection, cpp)
 
 geom = pygmsh.opencascade.Geometry()
 
@@ -24,10 +24,20 @@ geom.add_physical(ps, label="SURFACE")
 
 pygmsh_mesh = pygmsh.generate_mesh(geom)
 points, cells, cell_data = pygmsh_mesh.points, pygmsh_mesh.cells, pygmsh_mesh.cell_data
+#print("\n".join(geom._GMSH_CODE))
+
+print(cells['triangle'])
+#print(points)
+print(points.size)
+print(cells['triangle'].size)
+meshio.write("unit_square_pygmsh.xdmf", meshio.Mesh(
+    points=points,
+    cells={"triangle": cells["triangle"]}))
 
 mesh = cpp.mesh.Mesh(MPI.comm_world,
                      cpp.mesh.CellType.Type.triangle, points,
                      cells['triangle'], [], cpp.mesh.GhostMode.none)
+
 assert mesh.degree() == 1
 assert mesh.geometry.dim == 3
 assert mesh.topology.dim == 2
