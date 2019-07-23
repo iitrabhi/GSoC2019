@@ -1,6 +1,5 @@
 from pygmsh.built_in.geometry import Geometry
 from pygmsh import generate_mesh
-import meshio
 import dolfin
 import dolfin.io
 
@@ -27,31 +26,30 @@ geom.add_physical(l2, label="TOP")
 geom.add_physical(l3, label="LEFT")
 geom.add_physical(ps, label="DOMAIN")
 
-#print("\n".join(geom._GMSH_CODE))
+# print("\n".join(geom._GMSH_CODE))
 
 mesh = generate_mesh(geom)
 points, cells, cell_data, boundary = mesh.points, mesh.cells, mesh.cell_data, mesh.field_data
 
 comm = dolfin.MPI.comm_world
 rank = comm.Get_rank()
-print('My rank is ',rank)
-
+print('My rank is ', rank)
 
 mesh_from_array = dolfin.cpp.mesh.Mesh(
-    dolfin.MPI.comm_world, 
-    dolfin.cpp.mesh.CellType.triangle, 
+    dolfin.MPI.comm_world,
+    dolfin.cpp.mesh.CellType.triangle,
     points,
-    cells['triangle'], 
-    [], 
+    cells['triangle'],
+    [],
     dolfin.cpp.mesh.GhostMode.none)
 
-#print(cells["triangle"])
+# print(cells["triangle"])
 
-mvc_from_array = dolfin.MeshValueCollection("size_t", 
-	mesh_from_array,
-	1, 
-	cells["line"], 
-	cell_data["line"]['gmsh:physical'])
+mvc_from_array = dolfin.MeshValueCollection("size_t",
+                                            mesh_from_array,
+                                            1,
+                                            cells["line"],
+                                            cell_data["line"]['gmsh:physical'])
 
 print(mvc_from_array.values())
 
@@ -60,10 +58,10 @@ mf = dolfin.cpp.mesh.MeshFunctionSizet(mesh_from_array, mvc_from_array, 1)
 
 # ToDo: Convert field data to String:Int
 # or make read and write info more general.
-#boundary['LINE'] = 1
-#boundary['SURFACE'] = 2
+# boundary['LINE'] = 1
+# boundary['SURFACE'] = 2
 #
-#file = dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/mesh_from_dolfin.xdmf")
-#file.write(mesh_from_array)
-#file.write(boundary)
+# file = dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/mesh_from_dolfin.xdmf")
+# file.write(mesh_from_array)
+# file.write(boundary)
 pass

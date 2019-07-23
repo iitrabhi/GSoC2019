@@ -56,7 +56,6 @@ gmsh.model.setPhysicalName(1, 4, "RIGHT")
 gmsh.model.addPhysicalGroup(2, [6], 6)
 gmsh.model.setPhysicalName(2, 6, "DOMAIN")
 
-
 gmsh.model.geo.synchronize()
 gmsh.model.mesh.generate()
 nodeTags, coord, parametricCoord = gmsh.model.mesh.getNodes()
@@ -75,8 +74,9 @@ for num, element in enumerate(element_types):
     # since nodes are numbered starting from 0
     cells[name] = node_tags[num] - 1
     cells[name] = numpy.reshape(cells[name],
-                                (numpy.int(cells[name].size / num_nodes), num_nodes))
-    # If mesh contains the physical group of dimension dim 
+                                (numpy.int(cells[name].size / num_nodes),
+                                    num_nodes))
+    # If mesh contains the physical group of dimension dim
     # -1 to match with gmsh api dimensions
     dim_tags = gmsh.model.getPhysicalGroups(num_nodes - 1)
     if dim_tags:
@@ -86,9 +86,9 @@ for num, element in enumerate(element_types):
             element_type, element_tag, node_tag = gmsh.model.mesh.getElements(dim, tag)
             for ele_num in element_tag[0]:
                 element_tags[dim - 1][element_tags[dim - 1] == ele_num] = tag
-        cell_data[name] =  element_tags[dim - 1]
-#print(cell_data)
-#print(cells['triangle'])
+        cell_data[name] = element_tags[dim - 1]
+# print(cell_data)
+# print(cells['triangle'])
 
 gmsh.write("unit_square.geo_unrolled")
 
@@ -100,15 +100,15 @@ meshio.write("unit_square_gmsh.xdmf", meshio.Mesh(
     cells={"triangle": cells["triangle"]}))
 
 mesh = cpp.mesh.Mesh(MPI.comm_world,
-                     cpp.mesh.CellType.triangle, points.astype('float64'),
-                     cells['triangle'].astype('int'), [], cpp.mesh.GhostMode.none)
+                     cpp.mesh.CellType.triangle, points,
+                     cells['triangle'],
+                     [], cpp.mesh.GhostMode.none)
 
-mvc_from_array = MeshValueCollection("size_t", 
-  mesh,
-  1, 
-  cells["line"], 
-  cell_data["line"])
+mvc_from_array = MeshValueCollection("size_t",
+                                     mesh,
+                                     1,
+                                     cells["line"],
+                                     cell_data["line"])
 
 if MPI.comm_world.rank == 0:
-  print(mvc_from_array.values())
-
+    print(mvc_from_array.values())
