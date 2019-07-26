@@ -1,4 +1,15 @@
+<?xml version="1.0"?>
 <Xdmf Version="3.0">
+  <Information Name="Information">
+    <![CDATA[
+    <main>
+    <map key="bottom">1</map>
+    <map key="top">2</map>
+    <map key="left">3</map>
+    <map key="right">4</map>
+    </main>
+    ]]>
+  </Information>
   <Domain>
     <Grid Name="Grid">
       <Geometry GeometryType="XYZ">
@@ -20,17 +31,5 @@
         <DataItem DataType="Int" Dimensions="10" Format="HDF" Precision="8">mvc_1d.h5:/data2</DataItem>
       </Attribute>
     </Grid>
-
-    <Information Name="Information">
-        <![CDATA[
-        <main>
-        <map key="bottom">1</map>
-        <map key="top">2</map>
-        <map key="left">3</map>
-        <map key="right">4</map>
-        </main>
-        ]]>
-    </Information>
-
   </Domain>
 </Xdmf>

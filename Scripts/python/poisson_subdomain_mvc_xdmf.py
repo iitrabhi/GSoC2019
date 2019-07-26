@@ -9,9 +9,9 @@ from ufl import SpatialCoordinate, inner, grad, lhs, rhs, dot, exp, Measure, dx,
 from dolfin.fem import assemble_scalar
 from dolfin import FunctionSpace, TrialFunction, TestFunction, DirichletBC, Function, solve, cpp,fem    
 
-with dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/unit_square.xdmf") as xdmf_infile:
-    mesh_2d = xdmf_infile.read_mesh(dolfin.MPI.comm_world, dolfin.cpp.mesh.GhostMode.none)
-    boundary= xdmf_infile.read_information()
+with dolfin.io.XDMFFile(dolfin.MPI.comm_world, "input/mesh_2d.xdmf") as xdmf_infile:
+    mesh_2d = xdmf_infile.read_mesh(dolfin.cpp.mesh.GhostMode.none)
+    boundary= xdmf_infile.read_information_int()
     print(boundary)
 
 # mvc = dolfin.MeshValueCollection("size_t", mesh_2d, 1)
