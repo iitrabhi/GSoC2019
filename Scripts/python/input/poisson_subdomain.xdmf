@@ -2,10 +2,10 @@
   <Domain>
     <Grid Name="Grid">
       <Geometry GeometryType="XYZ">
-        <DataItem DataType="Float" Dimensions="51 3" Format="HDF" Precision="8">unit_square.h5:/data0</DataItem>
+        <DataItem DataType="Float" Dimensions="51 3" Format="HDF" Precision="8">poisson_subdomain.h5:/data0</DataItem>
       </Geometry>
       <Topology NumberOfElements="79" TopologyType="Triangle">
-        <DataItem DataType="Int" Dimensions="79 3" Format="HDF" Precision="8">unit_square.h5:/data1</DataItem>
+        <DataItem DataType="Int" Dimensions="79 3" Format="HDF" Precision="8">poisson_subdomain.h5:/data1</DataItem>
       </Topology>
     </Grid>
     <Information Name="Information"><![CDATA[<main><map key="LEFT">1</map><map key="TOP">2</map><map key="RIGHT">3</map><map key="BOTTOM">4</map><map key="DOMAIN">5</map><map key="OBSTACLE">6</map></main>]]></Information>
