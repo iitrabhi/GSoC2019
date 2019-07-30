@@ -1,27 +1,25 @@
 <?xml version="1.0"?>
 <Xdmf Version="3.0">
   <Domain>
-    
     <Grid Name="Domain">
-      <Geometry GeometryType="XYZ">
-        <DataItem DataType="Float" Dimensions="142 3" Format="HDF" Precision="8">mesh_2d.h5:/data0</DataItem>
-      </Geometry>
       <Topology NumberOfElements="242" TopologyType="Triangle">
         <DataItem DataType="Int" Dimensions="242 3" Format="HDF" Precision="8">mesh_2d.h5:/data1</DataItem>
       </Topology>
+      <Geometry GeometryType="XYZ">
+        <DataItem DataType="Float" Dimensions="142 3" Format="HDF" Precision="8">mesh_2d.h5:/data0</DataItem>
+      </Geometry>
     </Grid>
 
     <Grid Name="Boundary">
-      <Geometry GeometryType="XYZ">
-        <DataItem DataType="Float" Dimensions="142 3" Format="HDF" Precision="8">mvc_1d.h5:/data0</DataItem>
-      </Geometry>
       <Topology NumberOfElements="10" TopologyType="Polyline">
         <DataItem DataType="Int" Dimensions="10 2" Format="HDF" Precision="8">mvc_1d.h5:/data1</DataItem>
       </Topology>
+      <Geometry GeometryType="XYZ">
+        <DataItem DataType="Float" Dimensions="142 3" Format="HDF" Precision="8">mvc_1d.h5:/data0</DataItem>
+      </Geometry>
       <Attribute AttributeType="Scalar" Center="Cell" Name="name_to_read">
         <DataItem DataType="Int" Dimensions="10" Format="HDF" Precision="8">mvc_1d.h5:/data2</DataItem>
       </Attribute>
     </Grid>
-
   </Domain>
 </Xdmf>

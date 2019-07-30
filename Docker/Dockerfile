@@ -30,9 +30,13 @@ FROM quay.io/fenicsproject/dolfinx:latest
 
 ########################################################
 # Add custom packages and development environment here
-########################################################
+######################################################## For validating XDMF using xmllint
+RUN apt-get update && apt-get upgrade -y && apt-get install -y libxml2-utils
+
 # docker build -t mvc-xdmf .
 # Clone this repository
+
+
 RUN git clone -b iitrabhi/mvc-xdmf https://github.com/iitrabhi/dolfinx.git
 
 # Build and install dolfinx
@@ -51,4 +55,4 @@ RUN pip3 install -e /root/meshio/.
 
 ########################################################
 
-CMD ["/usr/sbin/sshd", "-D"]
+# CMD ["/usr/sbin/sshd", "-D"]

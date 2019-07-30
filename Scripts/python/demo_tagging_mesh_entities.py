@@ -1,5 +1,6 @@
-import dolfin
 import meshio
+from dolfin import MPI, cpp
+from dolfin.io import XDMFFile
 from pygmsh import generate_mesh
 from pygmsh.built_in.geometry import Geometry
 
@@ -54,9 +55,11 @@ meshio.write("input/poisson_subdomain.xdmf", meshio.Mesh(
     field_data=field_data))
 
 # -----------------Step - 3 - Read mesh -----------------
-with dolfin.io.XDMFFile(dolfin.MPI.comm_world,
-                        "input/poisson_subdomain.xdmf") as xdmf_infile:
-    mesh_2d = xdmf_infile.read_mesh(dolfin.cpp.mesh.GhostMode.none)
+with XDMFFile(MPI.comm_world,
+              "input/poisson_subdomain.xdmf") as xdmf_infile:
+    mesh = xdmf_infile.read_mesh(cpp.mesh.GhostMode.none)
     tags = xdmf_infile.read_information_int()
     print(tags)
+# -----------------Step - 3 - Read MVC -----------------
+
 pass
