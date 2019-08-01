@@ -1,3 +1,10 @@
+"""This demo program demonstrates how to mark sub domains of a mesh
+and store the sub domain markers as a mesh function to a DOLFIN XML
+file.
+
+The sub domain markers produced by this demo program are the ones used
+for the Stokes demo programs.
+"""
 import meshio
 from dolfin import MPI, cpp
 from dolfin.io import XDMFFile
@@ -57,11 +64,14 @@ mesh_in=meshio.read("input/poisson_subdomain.xdmf")
 print(mesh_in.field_data)
 assert len(msh.field_data) == len(mesh_in.field_data)
 # -----------------Step - 3 - Read mesh -----------------
-#with XDMFFile(MPI.comm_world,
-#              "input/poisson_subdomain.xdmf") as xdmf_infile:
-#    mesh = xdmf_infile.read_mesh(cpp.mesh.GhostMode.none)
-#    tags = xdmf_infile.read_information_int()
-#    print(tags)
-# -----------------Step - 3 - Read MVC -----------------
-
+with XDMFFile(MPI.comm_world,
+              "input/poisson_subdomain.xdmf") as xdmf_infile:
+    mesh = xdmf_infile.read_mesh(cpp.mesh.GhostMode.none)
+    tags = xdmf_infile.read_information_int()
+    print(tags)
+# -----------------Step - 3 - Write mesh -----------------
+with XDMFFile(MPI.comm_world,
+              "input/poisson_subdomain_from_dolfin.xdmf") as xdmf_outfile:
+	xdmf_outfile.write(mesh)
+	xdmf_outfile.write(tags)
 pass

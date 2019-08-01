@@ -1,15 +1,23 @@
 <Xdmf Version="3.0">
   <Domain>
     <Grid Name="Grid">
-      <Geometry GeometryType="XY">
-        <DataItem DataType="Float" Dimensions="3376 2" Format="HDF" Precision="8">poisson_subdomain_mesh.h5:/data0</DataItem>
+      <Information Name="Information" Value="6"><![CDATA[
+        <main>
+          <map key="LEFT" dim="1">1</map>
+          <map key="TOP" dim="1">2</map>
+          <map key="RIGHT" dim="1">3</map>
+          <map key="BOTTOM" dim="1">4</map>
+          <map key="DOMAIN" dim="2">5</map>
+          <map key="OBSTACLE" dim="2">6</map>
+        </main>
+      ]]>
+      </Information>
+      <Geometry GeometryType="XYZ">
+        <DataItem DataType="Float" Dimensions="51 3" Format="HDF" Precision="8">poisson_subdomain.h5:/data0</DataItem>
       </Geometry>
-      <Topology NumberOfElements="6550" TopologyType="Triangle">
-        <DataItem DataType="Int" Dimensions="6550 3" Format="HDF" Precision="8">poisson_subdomain_mesh.h5:/data1</DataItem>
+      <Topology NumberOfElements="79" TopologyType="Triangle">
+        <DataItem DataType="Int" Dimensions="79 3" Format="HDF" Precision="8">poisson_subdomain.h5:/data1</DataItem>
       </Topology>
-      <Attribute AttributeType="Scalar" Center="Cell" Name="subdomain">
-        <DataItem DataType="Int" Dimensions="6550" Format="HDF" Precision="8">poisson_subdomain_mesh.h5:/data2</DataItem>
-      </Attribute>
     </Grid>
   </Domain>
 </Xdmf>

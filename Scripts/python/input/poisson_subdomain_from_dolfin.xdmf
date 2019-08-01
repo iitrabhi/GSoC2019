@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE Xdmf SYSTEM "Xdmf.dtd" []>
+<Xdmf Version="3.0" xmlns:xi="http://www.w3.org/2001/XInclude">
+  <Domain>
+    <Grid Name="mesh" GridType="Uniform">
+      <Topology NumberOfElements="79" TopologyType="Triangle" NodesPerElement="3">
+        <DataItem Dimensions="79 3" NumberType="UInt" Format="HDF">poisson_subdomain_from_dolfin.h5:/Mesh/mesh/topology</DataItem>
+      </Topology>
+      <Geometry GeometryType="XYZ">
+        <DataItem Dimensions="51 3" Format="HDF">poisson_subdomain_from_dolfin.h5:/Mesh/mesh/geometry</DataItem>
+      </Geometry>
+      <Information Name="Information" Value="6"><![CDATA[<?xml version="1.0"?>
+<main>
+  <map key="BOTTOM">4</map>
+  <map key="DOMAIN">5</map>
+  <map key="LEFT">1</map>
+  <map key="OBSTACLE">6</map>
+  <map key="RIGHT">3</map>
+  <map key="TOP">2</map>
+</main>
+]]></Information>
+    </Grid>
+  </Domain>
+</Xdmf>
