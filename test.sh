@@ -24,6 +24,7 @@ c)cd  Scripts/cpp/mesh-workflow-new/build/ && \
 	make -j 2
 
 ./demo_mesh_workflow ;;
-d) ;;
+d) cd Scripts/python
+python3 demo_tagging_mesh_entities.py;;
 esac
 done

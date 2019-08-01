@@ -1,0 +1,13 @@
+<Xdmf Version="3.0">
+  <Domain>
+    <Grid Name="Grid">
+      <Information Name="Information" Value="4"><![CDATA[<main><map key="bottom">1</map><map key="right">2</map><map key="top">3</map><map key="left">4</map></main>]]></Information>
+      <Geometry GeometryType="XYZ">
+        <DataItem DataType="Float" Dimensions="4 3" Format="HDF" Precision="8">mesh.h5:/data0</DataItem>
+      </Geometry>
+      <Topology NumberOfElements="2" TopologyType="Triangle">
+        <DataItem DataType="Int" Dimensions="2 3" Format="HDF" Precision="8">mesh.h5:/data1</DataItem>
+      </Topology>
+    </Grid>
+  </Domain>
+</Xdmf>

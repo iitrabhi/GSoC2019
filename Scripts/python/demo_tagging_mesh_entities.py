@@ -47,19 +47,21 @@ geom.add_physical(ps2, label="OBSTACLE")
 msh = generate_mesh(geom)
 points, cells = msh.points, msh.cells
 cell_data, field_data = msh.cell_data, msh.field_data
-
 # -----------------Step - 2 - Convert mesh --------------
 meshio.write("input/poisson_subdomain.xdmf", meshio.Mesh(
     points=points,
     cells={"triangle": cells["triangle"]},
     field_data=field_data))
 
+mesh_in=meshio.read("input/poisson_subdomain.xdmf")
+print(mesh_in.field_data)
+assert len(msh.field_data) == len(mesh_in.field_data)
 # -----------------Step - 3 - Read mesh -----------------
-with XDMFFile(MPI.comm_world,
-              "input/poisson_subdomain.xdmf") as xdmf_infile:
-    mesh = xdmf_infile.read_mesh(cpp.mesh.GhostMode.none)
-    tags = xdmf_infile.read_information_int()
-    print(tags)
+#with XDMFFile(MPI.comm_world,
+#              "input/poisson_subdomain.xdmf") as xdmf_infile:
+#    mesh = xdmf_infile.read_mesh(cpp.mesh.GhostMode.none)
+#    tags = xdmf_infile.read_information_int()
+#    print(tags)
 # -----------------Step - 3 - Read MVC -----------------
 
 pass
