@@ -1,0 +1,16 @@
+<Xdmf Version="3.0">
+  <Domain>
+    <Grid Name="Grid">
+      <Information Name="Information" Value="6"><![CDATA[<main><map dim="1" key="LEFT">1</map><map dim="1" key="TOP">2</map><map dim="1" key="RIGHT">3</map><map dim="1" key="BOTTOM">4</map><map dim="2" key="DOMAIN">5</map><map dim="2" key="OBSTACLE">6</map></main>]]></Information>
+      <Geometry GeometryType="XY">
+        <DataItem DataType="Float" Dimensions="51 2" Format="HDF" Precision="8">ps_mesh.h5:/data0</DataItem>
+      </Geometry>
+      <Topology NumberOfElements="79" TopologyType="Triangle">
+        <DataItem DataType="Int" Dimensions="79 3" Format="HDF" Precision="8">ps_mesh.h5:/data1</DataItem>
+      </Topology>
+      <Attribute AttributeType="Scalar" Center="Cell" Name="subdomain">
+        <DataItem DataType="Int" Dimensions="79" Format="HDF" Precision="8">ps_mesh.h5:/data2</DataItem>
+      </Attribute>
+    </Grid>
+  </Domain>
+</Xdmf>
