@@ -121,7 +121,7 @@ git_branch() {
 clear_attributes="\[$(tput sgr0)\]"
 
 # Custom bash prompt - "➜  ~ (master) "
-export PS1="${titlebar}${green}→  ${blue}\W ${cyan}\$(git_branch)${clear_attributes}"
+export PS1="${titlebar}${green}➜  ${blue}\W ${cyan}\$(git_branch)${clear_attributes}"
 
 # Turn off bell sound
 bind 'set bell-style none'
