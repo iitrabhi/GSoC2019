@@ -15,6 +15,7 @@ from pygmsh.built_in.geometry import Geometry
 geom = Geometry()
 
 mesh_ele_size = 0.2
+
 p1 = geom.add_point([0.0, 0.0, 0], lcar=mesh_ele_size)
 p2 = geom.add_point([0.0, 1.0, 0], lcar=mesh_ele_size)
 p3 = geom.add_point([1.0, 1.0, 0], lcar=mesh_ele_size)
@@ -60,7 +61,7 @@ meshio.write("input/poisson_subdomain.xdmf", meshio.Mesh(
     cells={"triangle": cells["triangle"]},
     field_data=field_data))
 
-mesh_in=meshio.read("input/poisson_subdomain.xdmf")
+mesh_in = meshio.read("input/poisson_subdomain.xdmf")
 print(mesh_in.field_data)
 assert len(msh.field_data) == len(mesh_in.field_data)
 # -----------------Step - 3 - Read mesh -----------------
@@ -72,6 +73,6 @@ with XDMFFile(MPI.comm_world,
 # -----------------Step - 3 - Write mesh -----------------
 with XDMFFile(MPI.comm_world,
               "input/poisson_subdomain_from_dolfin.xdmf") as xdmf_outfile:
-	xdmf_outfile.write(mesh)
-	xdmf_outfile.write(tags)
+    xdmf_outfile.write(mesh)
+    xdmf_outfile.write(tags)
 pass

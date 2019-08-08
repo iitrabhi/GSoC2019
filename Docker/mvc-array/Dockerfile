@@ -1,3 +1,5 @@
+ARG TINI_VERSION=v0.18.0
+
 FROM quay.io/fenicsproject/dolfinx:latest
 
 WORKDIR /tmp
@@ -25,3 +27,18 @@ RUN git clone -b iitrabhi/mvc-xdmf https://github.com/iitrabhi/meshio.git && \
 	rm -rf /tmp/*
 
 WORKDIR /root
+
+########################################
+
+FROM base as notebook
+LABEL description="DOLFIN-X Jupyter Notebook"
+WORKDIR /root
+
+ARG TINI_VERSION
+ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+RUN chmod +x /tini && \
+    pip3 install --no-cache-dir jupyter jupyterlab
+
+ENTRYPOINT ["/tini", "--", "jupyter", "notebook", "--ip", "0.0.0.0", "--no-browser", "--allow-root"]
+
+########################################
