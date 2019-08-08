@@ -1,6 +1,6 @@
 #! /bin/bash
 
-while getopts abcde option
+while getopts abcdef option
 do
 case "${option}"
 in
@@ -29,5 +29,8 @@ python3 demo_tagging_mesh_entities.py;;
 
 e) cd Submodules/dolfinx/python/demo/poisson-subdomain/
 python3 demo_poisson_subdomain.py;;
+
+f) cd Scripts/python/gmsh_workflow/
+python3 gmsh_workflow.py;;
 esac
 done
