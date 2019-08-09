@@ -7,6 +7,9 @@ WORKDIR /tmp
 # For validating XDMF using xmllint
 RUN apt-get update && apt-get upgrade -y && apt-get install -y libxml2-utils
 
+# Install black for checking python code
+RUN pip3 install black
+
 # docker build -t mvc-xdmf .
 # Clone this repository
 
