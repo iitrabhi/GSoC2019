@@ -24,7 +24,7 @@ docker build --target notebook -t mvc-xdmf-notebook .
 ```
 cd /path/to/this/repo
 cd Docker/mvc-xdmf
-docker build -t mvc-xdmf .
+docker build --target base -t mvc-xdmf .
 ```
 
 Note that you should have the file named Dockerfile in the directory where you run docker build.

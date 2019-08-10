@@ -1,0 +1,307 @@
+#
+# .. _demo_pde_subdomains_poisson_documentation:
+#
+# Poisson equation with multiple subdomains
+# =========================================
+#
+# This demo is implemented in a single Python file,
+# :download:`demo_poisson_subdomain.py`, which contains both the
+# variational forms and the solver. The mesh file used in this demo is
+# created in gmsh and could be downloaded from here
+# :download:`poisson_subdomain.msh`. We suggest that you familiarize
+# yourself with the :ref:`Poisson demo
+# <demo_poisson_equation>` before studying this example,
+# as some of the more standard steps will be described in less detail.
+#
+#
+# The main purpose of this demo is to demonstrate how to
+#
+# * Convert a mesh containing various tagged regions into XDMF format.
+# * Read the information regarding tagged regions in dolfin.
+# * Create and integrate variational forms over distinct regions of a domain
+#   and/or its boundaries.
+#
+# The domain under consideration in this demo will look as follows:
+#
+# .. image:: poisson_subdomain.png
+#    :scale: 40 %
+#
+#
+# Equation and problem definition
+# -------------------------------
+#
+# For illustration purposes, we consider a weighted Poisson equation over
+# a unit square: :math:`\Omega = [0,1] \times [0,1]` with mixed boundary
+# conditions: find :math:`u` satisfying
+#
+# .. math::
+#    - \mathrm{div} (a \nabla u) &= 1.0 \quad {\rm in} \ \Omega, \\
+#                   u &= 5.0 \quad {\rm on} \ \Gamma_{T}, \\
+#                   u &= 0.0 \quad {\rm on} \ \Gamma_{B}, \\
+#                   \nabla u \cdot n &= - 10.0 \, \\
+#                   e^{-(y - 0.5)^2} \quad {\rm on} \ \Gamma_{L}. \\
+#                   \nabla u \cdot n &= 1.0 \quad {\rm on} \ \Gamma_{R}, \\
+#
+# where :math:`\Gamma_{T}`, :math:`\Gamma_{B}`, :math:`\Gamma_{L}`,
+# :math:`\Gamma_{R}` denote the top, bottom, left and right sides of the
+# unit square, respectively. The coefficient :math:`a` may vary over the
+# domain: here, we let :math:`a = a_1 = 0.01` for :math:`(x, y) \in
+# \Omega_1 = [0.5, 0.7] \times [0.2, 1.0]` and :math:`a = a_0 = 1.0` in
+# :math:`\Omega_0 = \Omega \backslash \Omega_1`. We can think of
+# :math:`\Omega_1` as an obstacle with differing material properties
+# from the rest of the domain.
+#
+#
+# Variational form
+# ----------------
+#
+# We can write the above boundary value problem in the standard linear
+# variational form: find :math:`u \in V` such that
+#
+# .. math::
+#
+#    a(u, v) = L(v) \quad \forall \ v \in \hat{V},
+#
+# where :math:`V` and :math:`\hat{V}` are suitable function spaces
+# incorporating the Dirichlet boundary conditions on :math:`\Gamma_{T}`
+# and :math:`\Gamma_{B}`, and
+#
+# .. math::
+#
+#    a(u, v) &= \int_{\Omega_0} a_0 \nabla u \cdot \nabla v \, {\rm d} x
+#             + \int_{\Omega_1} a_1 \nabla u \cdot \nabla v \, {\rm d} x, \\
+#    L(v)      &=  \int_{\Gamma_{L}} g_L v \, {\rm d} s
+#             + \int_{\Gamma_{R}} g_R v \, {\rm d} s
+#             + \int_{\Omega} f \, v \, {\rm d} x.
+#
+# where :math:`f = 1.0`, :math:`g_L = - 10.0 e^{-(y - 0.5)^2}` and
+# :math:`g_R = 1.0`.
+#
+# Implementation
+# --------------
+#
+# This description goes through the implementation (in
+# :download:`demo_poisson_subdomain.py`) of a solver for the above
+# described equation.
+#
+# First, the :py:mod:`dolfin` module is imported: ::
+
+from dolfin.io import XDMFFile
+import numpy as np
+from ufl import SpatialCoordinate, inner, grad, lhs, rhs, exp, dx, ds
+from dolfin import FunctionSpace, TrialFunction, TestFunction, DirichletBC
+from dolfin import Function, solve, MPI, cpp, fem, MeshValueCollection
+
+# In this example, different boundary conditions are prescribed on
+# different parts of the boundaries, and different parts of the interior
+# have different material properties. This information must be made
+# available to the solver.  One way of doing this, is to tag the
+# different subregions with different (integer) labels, and later
+# integrate over the specified regions. DOLFIN provides a class
+# :py:class:`MeshFunction <dolfin.cpp.MeshFunction>` which is useful for
+# these types of operations: instances of this class represent functions
+# over mesh entities (such as over cells or over facets). Mesh functions
+# can be read from file or, if explicit formulae for the domains are
+# known, they can be constructed by way of instances of the
+# :py:class:`SubDomain <dolfin.cpp.SubDomain>` class. In this example we
+# are going to use an external meshing software `gmsh` to create the geometry
+# and tag different regions within the domain. For details on how to create
+# the mesh and tag different regions the reader is reffered to
+# :ref:`Tagging mesh entities demo. <demo_tagging_mesh_entities>`. In this
+# demo we begin by creating a Mesh Value Collection from the XDMF file. Since
+# mixed topology elements are not allowed in FEniCS we have to separate
+# the mesh entities of different dimensions into different XDMF files.
+# This is achieved via ::
+
+# Read the file generated by gmsh
+
+from pygmsh import generate_mesh
+from pygmsh.built_in.geometry import Geometry
+
+# We begin by constructing the mesh using
+# :py:mod:`pygmsh` and then marking the different mesh regions using the
+# :py:class:`add_physical()` method. This simulates the construction and
+# tagging of mesh in gmsh ::
+
+# -----------------Step - 1 - Define mesh --------------
+geom = Geometry()
+
+mesh_ele_size = 0.2
+p1 = geom.add_point([0.0, 0.0, 0], lcar=mesh_ele_size)
+p2 = geom.add_point([0.0, 1.0, 0], lcar=mesh_ele_size)
+p3 = geom.add_point([1.0, 1.0, 0], lcar=mesh_ele_size)
+p4 = geom.add_point([1.0, 0.0, 0], lcar=mesh_ele_size)
+p5 = geom.add_point([0.2, 0.5, 0], lcar=mesh_ele_size)
+p6 = geom.add_point([0.2, 0.7, 0], lcar=mesh_ele_size)
+p7 = geom.add_point([1.0, 0.5, 0], lcar=mesh_ele_size)
+p8 = geom.add_point([1.0, 0.7, 0], lcar=mesh_ele_size)
+
+l1 = geom.add_line(p1, p4)
+l2 = geom.add_line(p3, p2)
+l3 = geom.add_line(p2, p1)
+l4 = geom.add_line(p7, p5)
+l5 = geom.add_line(p5, p6)
+l6 = geom.add_line(p6, p8)
+l7 = geom.add_line(p4, p7)
+l8 = geom.add_line(p7, p8)
+l9 = geom.add_line(p8, p3)
+
+ll1 = geom.add_line_loop(lines=[l2, l3, l1, l7, l4, l5, l6, l9])
+ps1 = geom.add_plane_surface(ll1)
+
+ll2 = geom.add_line_loop(lines=[l6, -l8, l4, l5])
+ps2 = geom.add_plane_surface(ll2)
+
+# Tag line and surface
+geom.add_physical(l3, label="LEFT")
+geom.add_physical(l2, label="TOP")
+geom.add_physical([l9, l8, l7], label="RIGHT")
+geom.add_physical(l1, label="BOTTOM")
+
+geom.add_physical(ps1, label="DOMAIN")
+geom.add_physical(ps2, label="OBSTACLE")
+
+msh = generate_mesh(geom)
+points, cells = msh.points, msh.cells
+cell_data, field_data = msh.cell_data, msh.field_data
+
+tag_info = {key: field_data[key][0] for key in field_data}
+
+# Now we have the data related to the mesh available with us. The next step is
+# to convert the data into `XDMF` format that is supported in dolfin. For this
+# we make use of the package :py:mod:`meshio`. Note that if you have created
+# the mesh using `gmsh`, then you first need to read the mesh into meshio and
+# then convert it to `XDMF`. ::
+
+
+mesh = cpp.mesh.Mesh(
+    MPI.comm_world,
+    cpp.mesh.CellType.triangle,
+    points[:, :2],  # Converting to 2D
+    cells["triangle"],
+    [],
+    cpp.mesh.GhostMode.none,
+)
+
+mesh.geometry.coord_mapping = fem.create_coordinate_map(mesh)
+
+mvc_boundaries = MeshValueCollection(
+    "size_t",
+    mesh,
+    1,
+    cells["line"].tolist(),
+    cell_data["line"]["gmsh:physical"].tolist(),
+)
+
+mvc_subdomain = MeshValueCollection(
+    "size_t",
+    mesh,
+    2,
+    cells["triangle"].tolist(),
+    cell_data["triangle"]["gmsh:physical"].tolist(),
+)
+
+# The file "ps_mesh.xdmf" contains information about the tagged regions of cell
+# type 'triangle' and the file "ps_boundary.xdmf" contains information about
+# the cell type 'line'. The mesh value collection mvc_subdomain and
+# mvc_boundaries contains information about the integer tag of tagged
+# elements. The variable tag_info is a dictionary where the key is string tag
+# and the value is the corresponding int tag. We would use this dictionary to
+# specify Measures to integrate over specified regions and to specify
+# different boundary conditions. The above mesh value collections are defined
+# with the sole purpose of populating mesh functions.
+
+mf_triangle = cpp.mesh.MeshFunctionSizet(mesh, mvc_subdomain, 0)
+mf_line = cpp.mesh.MeshFunctionSizet(mesh, mvc_boundaries, 0)
+
+# Now that the geometry is defined and labeled, we can move on to defining the
+# input source functions: ::
+
+a0 = 1.0
+a1 = 0.01
+x = SpatialCoordinate(mesh)
+g_L = exp(-10 * (-pow(x[1] - 0.5, 2)))
+g_R = 1.0
+f = 1.0
+
+# Here, ``a0`` and ``a1`` represent the values of the coefficient
+# :math:`a` in the two regions of the domain, ``g_L`` and ``g_R``
+# represent the values of the Neumann boundary condition on the left and
+# right boundaries respectively, and ``f`` represents the body source.
+#
+# We may now move on to define the variational equation. As usual, we
+# start by defining a finite element function space and basis functions
+# on this space: ::
+
+# Define function space and basis functions
+V = FunctionSpace(mesh, ("CG", 2))
+u = TrialFunction(V)
+v = TestFunction(V)
+
+u5 = Function(V)
+with u5.vector.localForm() as bc_local:
+    bc_local.set(5.0)
+
+u0 = Function(V)
+with u0.vector.localForm() as bc_local:
+    bc_local.set(0.0)
+
+# With this function space, we can define the essential (Dirichlet)
+# boundary conditions on the top and bottom boundaries. These boundaries
+# correspond to the mesh function tagged by string tag ``TOP`` and ``BOTTOM``,
+# respectively, in the ``mf_line`` mesh function: ::
+# Define Dirichlet boundary conditions at top and bottom boundaries
+bcs = [
+    DirichletBC(V, u5, np.where(mf_line.values == tag_info["TOP"])[0]),
+    DirichletBC(V, u0, np.where(mf_line.values == tag_info["BOTTOM"])[0]),
+]
+
+# DOLFIN predefines the "measures" ``dx``, ``ds`` and ``dS``
+# representing integration over cells, exterior facets (that is, facets
+# on the boundary) and interior facets, respectively. These measures can
+# take an additional integer argument.  In fact, ``dx`` defaults to
+# ``dx(0)``, ``ds`` defaults to ``ds(0)``, and ``dS`` defaults to
+# ``dS(0)``. Integration over subregions can be specified by measures
+# with different integer labels as arguments. However, we also need to
+# map the geometry information stored in the mesh functions to these
+# measures. The easiest way of accomplishing this is to define new
+# measures with the mesh functions as additional input: ::
+
+dx = dx(subdomain_data=mf_triangle)
+ds = ds(subdomain_data=mf_line)
+
+# We can now define the variational forms corresponding to the
+# variational problem above using these measures and the tags for the
+# different subregions.
+# Here instead of using the integer labels we have used the dictionay
+# "tag_info". This helps in properly definig the variational form with
+# large number of tagged regions. Instead of using "ds(tag_info['LEFT'])"
+# you can also use "ds(1)" and that would result in the same variational
+# form. ::
+
+# Define variational form
+F = (
+        inner(a0 * grad(u), grad(v)) * dx(tag_info["DOMAIN"])
+        + inner(a1 * grad(u), grad(v)) * dx(tag_info["OBSTACLE"])
+        - g_L * v * ds(tag_info["LEFT"])
+        - g_R * v * ds(tag_info["RIGHT"])
+        - f * v * dx(tag_info["DOMAIN"])
+        - f * v * dx(tag_info["OBSTACLE"])
+)
+
+# For simplicity, we define the full form first,
+# and then extract the left- and right-hand sides using the UFL
+# functions :py:func:`lhs` and :py:func:`rhs` afterwards. We can then
+# :py:func:`solve <dolfin.fem.solving.solve>` as usual: ::
+
+# Separate left and right hand sides of equation
+a, L = lhs(F), rhs(F)
+
+# Solve problem
+u = Function(V)
+solve(a == L, u, bcs)
+
+# Now we can save the solution to a XDMF file for visualization. ::
+
+with XDMFFile(MPI.comm_world, "output.xdmf") as xdmf_outfile:
+    xdmf_outfile.write(u)

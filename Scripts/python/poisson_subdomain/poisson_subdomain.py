@@ -51,11 +51,11 @@ u = TrialFunction(V)
 v = TestFunction(V)
 
 u5 = Function(V)
-with u5.vector().localForm() as bc_local:
+with u5.vector.localForm() as bc_local:
     bc_local.set(5.0)
 
 u0 = Function(V)
-with u0.vector().localForm() as bc_local:
+with u0.vector.localForm() as bc_local:
     bc_local.set(0.0)
 
 

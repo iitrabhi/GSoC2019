@@ -1,6 +1,6 @@
 ARG TINI_VERSION=v0.18.0
 
-FROM quay.io/fenicsproject/dolfinx:latest
+FROM quay.io/fenicsproject/dolfinx:latest as base
 
 WORKDIR /tmp
 
