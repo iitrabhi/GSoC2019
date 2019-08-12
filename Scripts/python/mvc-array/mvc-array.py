@@ -214,94 +214,97 @@ mvc_subdomain = MeshValueCollection(
 mf_triangle = cpp.mesh.MeshFunctionSizet(mesh, mvc_subdomain, 0)
 mf_line = cpp.mesh.MeshFunctionSizet(mesh, mvc_boundaries, 0)
 
+print(mf_triangle.values)
+print(mf_line.values)
+
 # Now that the geometry is defined and labeled, we can move on to defining the
 # input source functions: ::
 
-a0 = 1.0
-a1 = 0.01
-x = SpatialCoordinate(mesh)
-g_L = exp(-10 * (-pow(x[1] - 0.5, 2)))
-g_R = 1.0
-f = 1.0
-
-# Here, ``a0`` and ``a1`` represent the values of the coefficient
-# :math:`a` in the two regions of the domain, ``g_L`` and ``g_R``
-# represent the values of the Neumann boundary condition on the left and
-# right boundaries respectively, and ``f`` represents the body source.
+# a0 = 1.0
+# a1 = 0.01
+# x = SpatialCoordinate(mesh)
+# g_L = exp(-10 * (-pow(x[1] - 0.5, 2)))
+# g_R = 1.0
+# f = 1.0
 #
-# We may now move on to define the variational equation. As usual, we
-# start by defining a finite element function space and basis functions
-# on this space: ::
-
-# Define function space and basis functions
-V = FunctionSpace(mesh, ("CG", 2))
-u = TrialFunction(V)
-v = TestFunction(V)
-
-u5 = Function(V)
-with u5.vector.localForm() as bc_local:
-    bc_local.set(5.0)
-
-u0 = Function(V)
-with u0.vector.localForm() as bc_local:
-    bc_local.set(0.0)
-
-# With this function space, we can define the essential (Dirichlet)
-# boundary conditions on the top and bottom boundaries. These boundaries
-# correspond to the mesh function tagged by string tag ``TOP`` and ``BOTTOM``,
-# respectively, in the ``mf_line`` mesh function: ::
-# Define Dirichlet boundary conditions at top and bottom boundaries
-bcs = [
-    DirichletBC(V, u5, np.where(mf_line.values == tag_info["TOP"])[0]),
-    DirichletBC(V, u0, np.where(mf_line.values == tag_info["BOTTOM"])[0]),
-]
-
-# DOLFIN predefines the "measures" ``dx``, ``ds`` and ``dS``
-# representing integration over cells, exterior facets (that is, facets
-# on the boundary) and interior facets, respectively. These measures can
-# take an additional integer argument.  In fact, ``dx`` defaults to
-# ``dx(0)``, ``ds`` defaults to ``ds(0)``, and ``dS`` defaults to
-# ``dS(0)``. Integration over subregions can be specified by measures
-# with different integer labels as arguments. However, we also need to
-# map the geometry information stored in the mesh functions to these
-# measures. The easiest way of accomplishing this is to define new
-# measures with the mesh functions as additional input: ::
-
-dx = dx(subdomain_data=mf_triangle)
-ds = ds(subdomain_data=mf_line)
-
-# We can now define the variational forms corresponding to the
-# variational problem above using these measures and the tags for the
-# different subregions.
-# Here instead of using the integer labels we have used the dictionay
-# "tag_info". This helps in properly definig the variational form with
-# large number of tagged regions. Instead of using "ds(tag_info['LEFT'])"
-# you can also use "ds(1)" and that would result in the same variational
-# form. ::
-
-# Define variational form
-F = (
-        inner(a0 * grad(u), grad(v)) * dx(tag_info["DOMAIN"])
-        + inner(a1 * grad(u), grad(v)) * dx(tag_info["OBSTACLE"])
-        - g_L * v * ds(tag_info["LEFT"])
-        - g_R * v * ds(tag_info["RIGHT"])
-        - f * v * dx(tag_info["DOMAIN"])
-        - f * v * dx(tag_info["OBSTACLE"])
-)
-
-# For simplicity, we define the full form first,
-# and then extract the left- and right-hand sides using the UFL
-# functions :py:func:`lhs` and :py:func:`rhs` afterwards. We can then
-# :py:func:`solve <dolfin.fem.solving.solve>` as usual: ::
-
-# Separate left and right hand sides of equation
-a, L = lhs(F), rhs(F)
-
-# Solve problem
-u = Function(V)
-solve(a == L, u, bcs)
-
-# Now we can save the solution to a XDMF file for visualization. ::
-
-with XDMFFile(MPI.comm_world, "output.xdmf") as xdmf_outfile:
-    xdmf_outfile.write(u)
+# # Here, ``a0`` and ``a1`` represent the values of the coefficient
+# # :math:`a` in the two regions of the domain, ``g_L`` and ``g_R``
+# # represent the values of the Neumann boundary condition on the left and
+# # right boundaries respectively, and ``f`` represents the body source.
+# #
+# # We may now move on to define the variational equation. As usual, we
+# # start by defining a finite element function space and basis functions
+# # on this space: ::
+#
+# # Define function space and basis functions
+# V = FunctionSpace(mesh, ("CG", 2))
+# u = TrialFunction(V)
+# v = TestFunction(V)
+#
+# u5 = Function(V)
+# with u5.vector.localForm() as bc_local:
+#     bc_local.set(5.0)
+#
+# u0 = Function(V)
+# with u0.vector.localForm() as bc_local:
+#     bc_local.set(0.0)
+#
+# # With this function space, we can define the essential (Dirichlet)
+# # boundary conditions on the top and bottom boundaries. These boundaries
+# # correspond to the mesh function tagged by string tag ``TOP`` and ``BOTTOM``,
+# # respectively, in the ``mf_line`` mesh function: ::
+# # Define Dirichlet boundary conditions at top and bottom boundaries
+# bcs = [
+#     DirichletBC(V, u5, np.where(mf_line.values == tag_info["TOP"])[0]),
+#     DirichletBC(V, u0, np.where(mf_line.values == tag_info["BOTTOM"])[0]),
+# ]
+#
+# # DOLFIN predefines the "measures" ``dx``, ``ds`` and ``dS``
+# # representing integration over cells, exterior facets (that is, facets
+# # on the boundary) and interior facets, respectively. These measures can
+# # take an additional integer argument.  In fact, ``dx`` defaults to
+# # ``dx(0)``, ``ds`` defaults to ``ds(0)``, and ``dS`` defaults to
+# # ``dS(0)``. Integration over subregions can be specified by measures
+# # with different integer labels as arguments. However, we also need to
+# # map the geometry information stored in the mesh functions to these
+# # measures. The easiest way of accomplishing this is to define new
+# # measures with the mesh functions as additional input: ::
+#
+# dx = dx(subdomain_data=mf_triangle)
+# ds = ds(subdomain_data=mf_line)
+#
+# # We can now define the variational forms corresponding to the
+# # variational problem above using these measures and the tags for the
+# # different subregions.
+# # Here instead of using the integer labels we have used the dictionay
+# # "tag_info". This helps in properly definig the variational form with
+# # large number of tagged regions. Instead of using "ds(tag_info['LEFT'])"
+# # you can also use "ds(1)" and that would result in the same variational
+# # form. ::
+#
+# # Define variational form
+# F = (
+#         inner(a0 * grad(u), grad(v)) * dx(tag_info["DOMAIN"])
+#         + inner(a1 * grad(u), grad(v)) * dx(tag_info["OBSTACLE"])
+#         - g_L * v * ds(tag_info["LEFT"])
+#         - g_R * v * ds(tag_info["RIGHT"])
+#         - f * v * dx(tag_info["DOMAIN"])
+#         - f * v * dx(tag_info["OBSTACLE"])
+# )
+#
+# # For simplicity, we define the full form first,
+# # and then extract the left- and right-hand sides using the UFL
+# # functions :py:func:`lhs` and :py:func:`rhs` afterwards. We can then
+# # :py:func:`solve <dolfin.fem.solving.solve>` as usual: ::
+#
+# # Separate left and right hand sides of equation
+# a, L = lhs(F), rhs(F)
+#
+# # Solve problem
+# u = Function(V)
+# solve(a == L, u, bcs)
+#
+# # Now we can save the solution to a XDMF file for visualization. ::
+#
+# with XDMFFile(MPI.comm_world, "output.xdmf") as xdmf_outfile:
+#     xdmf_outfile.write(u)
