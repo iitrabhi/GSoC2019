@@ -1,6 +1,6 @@
 #! /bin/bash
 
-while getopts abcdefg option
+while getopts abcdefgh option
 do
 case "${option}"
 in
@@ -38,6 +38,9 @@ python3 gmsh_workflow.py;;
 
 g) cd Scripts/python/mvc-array/
 python3 mvc-array.py;;
+
+h) cd Submodules/dolfinx/python/demo/mvc-from-array/
+python3 demo_mvc_from_array.py;;
 
 esac
 done
