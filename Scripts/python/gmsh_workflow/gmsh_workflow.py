@@ -112,7 +112,7 @@ mesh = cpp.mesh.Mesh(
 )
 
 mvc_from_array = MeshValueCollection(
-    "size_t", mesh, 1, cells['line'], cell_data['line']
+    "size_t", mesh, 1, cells["line"], cell_data["line"]
 )
 
 if MPI.comm_world.rank == 0:
