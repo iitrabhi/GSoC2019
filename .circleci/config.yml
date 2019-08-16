@@ -78,8 +78,8 @@ jobs:
       - run: *pull-submodules
       - run: *install-meshio
       - run: *build-dolfin
-      - run: *demos-cpp
-      - run: *demos-python
-      - run: *new-mesh-workflow
-      - run: *new-mesh-workflow-no-xdmf
+      #- run: *demos-cpp
+      #- run: *demos-python
+      #- run: *new-mesh-workflow
+      #- run: *new-mesh-workflow-no-xdmf
       #- run: *poisson-subdomain
