@@ -1,0 +1,15 @@
+<Xdmf Version="3.0">
+  <Domain>
+    <Grid Name="Grid">
+      <Geometry GeometryType="XYZ">
+        <DataItem DataType="Float" Dimensions="80 3" Format="HDF" Precision="8">BoxMesh.h5:/data0</DataItem>
+      </Geometry>
+      <Topology NumberOfElements="36" TopologyType="Hexahedron">
+        <DataItem DataType="Int" Dimensions="36 8" Format="HDF" Precision="8">BoxMesh.h5:/data1</DataItem>
+      </Topology>
+      <Attribute AttributeType="Scalar" Center="Cell" Name="gmsh:physical">
+        <DataItem DataType="Int" Dimensions="36" Format="HDF" Precision="8">BoxMesh.h5:/data2</DataItem>
+      </Attribute>
+    </Grid>
+  </Domain>
+</Xdmf>

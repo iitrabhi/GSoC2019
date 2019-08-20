@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
   std::array<Eigen::Vector3d, 2> pt{Eigen::Vector3d(0.0, 0.0, 0.0),
                                     Eigen::Vector3d(1.0, 1.0, 1.0)};
   auto _mesh = std::make_shared<mesh::Mesh>(generation::BoxMesh::create(
-      MPI_COMM_WORLD, pt, {{32, 32, 32}}, mesh::CellType::hexahedron,
+      MPI_COMM_WORLD, pt, {{32, 32, 32}}, mesh::CellType::tetrahedron,
       mesh::GhostMode::none));
   
   auto entity_index = 0;
@@ -28,10 +28,12 @@ int main(int argc, char* argv[])
 
   _mesh->create_connectivity(_dim, D);
   assert(_mesh->topology().connectivity(_dim, D));
-  const mesh::Connectivity& connectivity = *_mesh->topology().connectivity(_dim, D);
 
+  const mesh::Connectivity& connectivity = *_mesh->topology().connectivity(_dim, 0);
+  std::cout<< connectivity.size(entity_index) <<std::endl;
 
   const mesh::MeshEntity entity(*_mesh, _dim, entity_index);
+
 
   dolfin::mesh::CellType type = _mesh->cell_type;
   const std::int32_t num_vertices_per_cell = mesh::num_cell_vertices(type);
