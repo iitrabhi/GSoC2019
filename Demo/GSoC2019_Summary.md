@@ -1,7 +1,7 @@
 
 # GMsh/XDMF/DOLFIN mesh processing pipeline
 
-This is a summary of the work done for the Google Summer of Code 2019. The primary goal of the project was to ensure that the meshing package of choice [gmsh](http://gmsh.info/), DOLFIN, and the preferred visualization package,[Paraview](http://paraview.org/) work seamlessly together. The intention was to make improvements to the process of preserving the information about tagged regions of the mesh when importing it to DOLFIN. There were two approaches that were finalized for the project.
+This is a summary of the work done for the Google Summer of Code 2019. The primary goal of the project was to ensure that the meshing package of choice [gmsh](http://gmsh.info/), DOLFIN, and the preferred visualization package,[Paraview](http://paraview.org/) work seamlessly together. The intention was to make improvements to the process of preserving the information about tagged regions of the mesh when importing it to DOLFIN. Two approaches were finalized for the project.
 
 - Preserve the string tags when converting from `.msh` to `.xdmf`.
 - Add constructor to the class MeshValueCollection to support its creation from primitive arrays.
@@ -90,14 +90,22 @@ The next task was to read the information data stored in the XDMF file into dolf
 with XDMFFile(MPI.comm_world,
               "poisson_subdomain.xdmf") as xdmf_infile:
     mesh = xdmf_infile.read_mesh(cpp.mesh.GhostMode.none)
-    tag_information = xdmf_infile.read_information_int()
-    print(tag_information)
+    tag_info = xdmf_infile.read_information_int()
+    print(tag_info)
 ```
-By using the XDMF file created by meshio in previous step, ,this snippet will create the dictionary `tag_information`. The output dictionary is:
+By using the XDMF file created by meshio in previous step, ,this snippet will create the dictionary `tag_info`. The output dictionary is:
 ```python
 {'BOTTOM': 4, 'DOMAIN': 5, 'LEFT': 1, 'OBSTACLE': 6, 'RIGHT': 3, 'TOP': 2}
 ```
-The variable `tag_information` is a dictionay where the key is `string` tag and the value is the correponding `int` tag. We could use this dictionay to specify `Measures` to integrate over specified regions or to specify different boundary conditions.
+The variable `tag_info` is a dictionay where the key is `string` tag and the value is the correponding `int` tag. We could use this dictionay to specify `Measures` to integrate over specified regions or to specify different boundary conditions. The following snippet demonstrates the use case:
+```python
+F = inner(a0 * grad(u), grad(v)) * dx(tag_info['DOMAIN']) + \
+    inner(a1 * grad(u), grad(v)) * dx(tag_info['OBSTACLE']) + \
+    inner(g_L, v) * ds(tag_info['LEFT']) - \
+    inner(g_R, v) * ds(tag_info['RIGHT']) - \
+    inner(f, v) * dx(tag_info['DOMAIN']) - \
+    inner(f, v) * dx(tag_info['OBSTACLE'])
+```
 
 ### Creating MVC from arrays
 The final task was to add a constructor to `MeshValueCollection` to support its creation from primitive arrays. The necessary changes made to the repository are in [**PR #467**](https://github.com/FEniCS/dolfinx/pull/467).The following snippet would create a `MeshValueCollection`:
