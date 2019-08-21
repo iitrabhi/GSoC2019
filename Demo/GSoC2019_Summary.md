@@ -24,6 +24,8 @@ This is a summary of the work done for the Google Summer of Code 2019. The prima
 
 All the code snippets and changes made to the forks are present [here](https://github.com/iitrabhi/GSoC2019). Any user interested in testing out the code could go through the instructions presented in the readme file and follow along with the provided code snippets. In this demonstration, I will walk you through the implementation of the methods added to DOLFIN during this project period.
 
+![poisson](poisson_subdomain.svg)
+
 ### Conversion of a mesh using meshio
 
 The first task was to preserve the string tags when converting from `.msh` to `.xdmf`. For example, in a mesh file created with gmsh we have the following
