@@ -58,7 +58,7 @@ It was decided to store a separate XML tree within the CDATA. The root node of t
 
 [**PR #425**](https://github.com/nschloe/meshio/pull/425) adds the methods to read and write this information to XDMF. A user could simply use the following command to now save the information to the XDMF file:
 ```bash
-meshio-convert poission_subdomain.msh poission_subdomain.xdmf
+meshio-convert poisson_subdomain.msh poisson_subdomain.xdmf
 ```
 
 Even though this command now preserves the data regarding string tags, it produces an XDMF file with mixed topology . FEniCS right now does not support mixed elements, thus a few tweaks are required to make the mesh work with FEniCS. Currently, the way to do it is to explicitly specify the data to the writer of meshio.
@@ -70,16 +70,16 @@ mesh_of_triangles = meshio.Mesh(points=points[:, :2],
                                 ]['gmsh:physical']}},
                                 field_data=field_data) 
 
-meshio.write("poission_subdomain.xdmf", mesh_of_triangles )
+meshio.write("poisson_subdomain.xdmf", mesh_of_triangles )
 ```
 
-Here, we first make a mesh of triangular elements and then write to the file **poission\subdomain.xdmf.** The key "subdomain"; is the name that we would give to the constructor of MeshValueCollection in FEniCS.
+Here, we first make a mesh of triangular elements and then write to the file **poisson_subdomain.xdmf.** The key "subdomain"; is the name that we would give to the constructor of MeshValueCollection in FEniCS.
 
 ```python
 mvc_subdomain = xdmf_infile.read_mvc_size_t(mesh, "subdomain")
 ```
 
-You can check this demo file for full implementation.
+You can check this [demo file](https://github.com/iitrabhi/dolfinx/blob/iitrabhi/mvc-xdmf/python/demo/tagging-mesh-entities/demo_tagging_mesh_entities.py)  for full implementation.
 
 _In future we could simplify this functionality by  adding command line arguments to meshio to selectively write output files based on the topological dimension of the input data._
 
@@ -106,6 +106,7 @@ F = inner(a0 * grad(u), grad(v)) * dx(tag_info['DOMAIN']) + \
     inner(f, v) * dx(tag_info['DOMAIN']) - \
     inner(f, v) * dx(tag_info['OBSTACLE'])
 ```
+The following [demo file](https://github.com/iitrabhi/dolfinx/blob/iitrabhi/mvc-xdmf/python/demo/poisson-subdomain/demo_poisson_subdomain.py) demonstrates the whole process.
 
 ### Creating MVC from arrays
 The final task was to add a constructor to `MeshValueCollection` to support its creation from primitive arrays. The necessary changes made to the repository are in [**PR #467**](https://github.com/FEniCS/dolfinx/pull/467).The following snippet would create a `MeshValueCollection`:
@@ -113,6 +114,8 @@ The final task was to add a constructor to `MeshValueCollection` to support its 
 mvc = MeshValueCollection("size_t", mesh, dim, cells, cell_data)
 ```
 When creating a `MeshValueCollection` an argument specifying the type of the MeshValueCollection must be given. Allowed types are ‘int’, ‘size_t’, ‘double’ and ‘bool’. The second argument is the mesh and third is the topological dimension of the MeshValueCollection. The fourth argument is an array specifying the vertices of the mesh entity to be marked and the fifth argument is an array containing the marker of tagged entities. The length of the arrays of argument four and five must be the same.
+
+The following [demo file](https://github.com/iitrabhi/dolfinx/blob/iitrabhi/mvc-from-array/python/demo/mvc-from-array/demo_mvc_from_array.py) demonstrates the whole process.
 
 ## Future Work
 
